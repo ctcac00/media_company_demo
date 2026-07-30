@@ -1,0 +1,238 @@
+version: 2
+
+models:
+  - name: stg_barb_minute_ratings
+    description: "Hourly BARB-style audience ratings for linear TV. Note: seed uses hourly grain (simplified from minute-level) — documented in seeds/_seeds.yml."
+    columns:
+      - name: broadcast_date
+        description: "UK broadcast date"
+        tests:
+          - not_null
+      - name: broadcast_hour
+        description: "Hour of broadcast (0-23)"
+        tests:
+          - not_null
+      - name: channel_id
+        description: "FK to stg_channels"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_channels')
+                field: channel_id
+      - name: programme_id
+        description: "FK to stg_programmes"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_programmes')
+                field: programme_id
+      - name: demographic_id
+        description: "FK to stg_demographics"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_demographics')
+                field: demographic_id
+      - name: viewers_thousands
+        description: "Number of viewers in thousands"
+      - name: tvr_pct
+        description: "Television Rating as percentage of target demographic"
+      - name: _loaded_at
+        description: "Timestamp when record was processed by dbt"
+
+  - name: stg_barb_consolidated_audience
+    description: "Overnight and C7 consolidated audience by programme and channel. `c7_viewers_thousands` is NULL until TX+8 (CA-02)."
+    columns:
+      - name: broadcast_date
+        description: "UK broadcast date"
+        tests:
+          - not_null
+      - name: programme_id
+        description: "FK to stg_programmes"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_programmes')
+                field: programme_id
+      - name: channel_id
+        description: "FK to stg_channels"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_channels')
+                field: channel_id
+      - name: overnight_viewers_thousands
+        description: "Overnight audience in thousands"
+        tests:
+          - not_null
+      - name: c7_viewers_thousands
+        description: "Consolidated+7 audience in thousands. NULL until TX+8."
+      - name: c7_reach_thousands
+        description: "Consolidated+7 reach in thousands. NULL until TX+8."
+      - name: _loaded_at
+        description: "Timestamp when record was processed by dbt"
+
+  - name: stg_programmes
+    description: "Programme catalogue with title, genre, and PSB classification flags."
+    columns:
+      - name: programme_id
+        description: "Primary key — unique programme identifier"
+        tests:
+          - not_null
+          - unique
+      - name: title
+        description: "Programme title"
+        tests:
+          - not_null
+      - name: genre
+        description: "Top-level genre classification"
+        tests:
+          - not_null
+      - name: sub_genre
+        description: "Sub-genre classification"
+      - name: is_original_uk
+        description: "True if the programme is a UK original production"
+      - name: is_news_current_affairs
+        description: "True if the programme is classified as news or current affairs (PSB obligation tracking)"
+      - name: duration_min
+        description: "Programme duration in minutes"
+        tests:
+          - not_null
+      - name: _loaded_at
+        description: "Timestamp when record was processed by dbt"
+
+  - name: stg_episodes
+    description: "Episode-level metadata linked to programmes."
+    columns:
+      - name: episode_id
+        description: "Primary key — unique episode identifier"
+        tests:
+          - not_null
+          - unique
+      - name: programme_id
+        description: "FK to stg_programmes"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_programmes')
+                field: programme_id
+      - name: series_number
+        description: "Series number within the programme"
+      - name: episode_number
+        description: "Episode number within the series"
+      - name: first_tx_date
+        description: "Date of first transmission"
+        tests:
+          - not_null
+      - name: synopsis
+        description: "Short episode synopsis"
+      - name: _loaded_at
+        description: "Timestamp when record was processed by dbt"
+
+  - name: stg_schedule
+    description: "Linear broadcast schedule (EPG) for MediaCo-owned and competitor channels."
+    columns:
+      - name: broadcast_date
+        description: "UK broadcast date"
+        tests:
+          - not_null
+      - name: channel_id
+        description: "FK to stg_channels"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_channels')
+                field: channel_id
+      - name: start_time
+        description: "Scheduled start time (UTC)"
+        tests:
+          - not_null
+      - name: end_time
+        description: "Scheduled end time (UTC)"
+      - name: programme_id
+        description: "FK to stg_programmes"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_programmes')
+                field: programme_id
+      - name: episode_id
+        description: "FK to stg_episodes"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_episodes')
+                field: episode_id
+      - name: _loaded_at
+        description: "Timestamp when record was processed by dbt"
+
+  - name: stg_channels
+    description: "MediaCo channel portfolio and competitor universe reference data."
+    columns:
+      - name: channel_id
+        description: "Primary key — unique channel identifier"
+        tests:
+          - not_null
+          - unique
+      - name: channel_name
+        description: "Display name of the channel"
+        tests:
+          - not_null
+      - name: broadcaster
+        description: "Owning broadcaster (e.g. MediaCo, BBC, ITV)"
+        tests:
+          - not_null
+      - name: is_media_company_portfolio
+        description: "True if the channel is part of the MAIN portfolio"
+        tests:
+          - not_null
+      - name: is_psb
+        description: "True if the channel carries PSB obligations"
+        tests:
+          - not_null
+      - name: _loaded_at
+        description: "Timestamp when record was processed by dbt"
+
+  - name: stg_ad_campaigns
+    description: "Advertiser campaign bookings with budget and demographic targeting."
+    columns:
+      - name: campaign_id
+        description: "Primary key — unique campaign identifier"
+        tests:
+          - not_null
+          - unique
+      - name: advertiser_id
+        description: "FK to stg_advertisers"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_advertisers')
+                field: advertiser_id
+      - name: campaign_name
+        description: "Campaign name as booked"
+      - name: start_date
+        description: "Campaign start date"
+        tests:
+          - not_null
+      - name: end_date
+        description: "Campaign end date"
+      - name: total_budget_gbp
+        description: "Total campaign budget in GBP"
+      - name: target_demographic_id
+        description: "FK to stg_demographics — target audience demographic"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_demographics')
+                field: demographic_id
+      - name: _loaded_at
+        description: "Timestamp when record was processed by dbt"

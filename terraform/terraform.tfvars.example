@@ -1,0 +1,13 @@
+dbt_account_id           = 123456
+dbt_service_token        = "dbtc_xxx"
+dbt_access_url           = "https://cloud.getdbt.com"
+snowflake_account        = "your_snowflake_account"
+snowflake_user           = "your_snowflake_user"
+snowflake_database       = "your_database"
+snowflake_warehouse      = "your_warehouse"
+snowflake_role           = "your_role"
+snowflake_threads        = 6
+snowflake_dev_schema     = "dbt_media_company_demo_dev"
+snowflake_prod_schema    = "dbt_media_company_demo_prod"
+snowflake_ci_schema      = "dbt_media_company_demo_ci"
+snowflake_private_key_path = "~/.ssh/snowflake_demo_key.p8"

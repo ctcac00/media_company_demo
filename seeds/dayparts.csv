@@ -1,0 +1,7 @@
+daypart_id,daypart_name,start_hour,end_hour
+DP01,breakfast,6,9
+DP02,daytime,9,17
+DP03,pre-peak,17,19
+DP04,peak,19,22
+DP05,post-peak,22,24
+DP06,night,0,6

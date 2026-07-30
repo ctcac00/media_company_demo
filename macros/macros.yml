@@ -1,0 +1,12 @@
+version: 2
+
+macros:
+  - name: load_demo_source_data
+    description: "Loads deterministic engagement demo rows into MediaCo Streaming source tables."
+    arguments:
+      - name: demo_case
+        type: string
+        description: "Demo scenario to load. Currently supports engagement."
+      - name: demo_batch_id
+        type: string
+        description: "Optional stable batch identifier. Defaults to the dbt invocation ID."

@@ -1,0 +1,19 @@
+unit_tests:
+  - name: test_c7_uplift_calculation
+    model: int_overnight_to_c7_uplift
+    description: "Validates C7 uplift % calculation and is_c7_consolidated flag (CA-02)"
+    given:
+      - input: ref('stg_barb_consolidated_audience')
+        rows:
+          # Old enough to be C7-ready (more than 8 days ago) — uplift should be calculated
+          - {broadcast_date: '2025-01-15', programme_id: 'P001', channel_id: 'MAIN', overnight_viewers_thousands: 4000.0, c7_viewers_thousands: 5000.0, c7_reach_thousands: 4800.0}
+          # Too recent (within 8 days) — should be filtered out
+          - {broadcast_date: '2099-12-30', programme_id: 'P002', channel_id: 'MAIN', overnight_viewers_thousands: 3000.0, c7_viewers_thousands: null, c7_reach_thousands: null}
+      - input: ref('int_programme_schedule_enriched')
+        rows:
+          - {programme_id: 'P001', channel_id: 'MAIN', broadcast_date: '2025-01-15', start_time: '2025-01-15 20:00:00', end_time: '2025-01-15 21:00:00', genre: 'drama', sub_genre: 'crime', is_original_uk: true, is_news_current_affairs: false, title: 'Test Drama', duration_min: 60, slot_duration_min: 60, broadcast_hour: 20, is_simulcast: false, series_number: 1, episode_number: 1, first_tx_date: '2025-01-15', channel_name: 'MediaCo', broadcaster: 'MediaCo', is_media_company_portfolio: true, is_psb: true}
+    expect:
+      rows:
+        # P001: uplift = (5000-4000)/4000 = 0.25, is_c7_consolidated = true
+        - {programme_id: 'P001', overnight_viewers_thousands: 4000.0, c7_viewers_thousands: 5000.0, c7_uplift_pct: 0.25, is_c7_consolidated: true, genre: 'drama'}
+        # P002 should NOT appear — filtered by TX+8 rule

@@ -1,0 +1,26 @@
+unit_tests:
+  - name: test_barb_tvr_and_reach_logic
+    model: int_barb_audience_with_demographics
+    description: "Validates TVR aggregation and consecutive 15-min reach approximation (CA-01, CA-04)"
+    given:
+      - input: ref('stg_barb_minute_ratings')
+        rows:
+          # Programme with 2 hours of viewing — should have has_consecutive_15min = true
+          - {broadcast_date: '2025-03-15', broadcast_hour: 19, channel_id: 'MAIN', programme_id: 'P001', demographic_id: 'D001', viewers_thousands: 2500.0, tvr_pct: 3.97}
+          - {broadcast_date: '2025-03-15', broadcast_hour: 20, channel_id: 'MAIN', programme_id: 'P001', demographic_id: 'D001', viewers_thousands: 2800.0, tvr_pct: 4.44}
+          # Programme with 0 viewers — should have has_consecutive_15min = false
+          - {broadcast_date: '2025-03-15', broadcast_hour: 14, channel_id: 'EXTRA', programme_id: 'P002', demographic_id: 'D002', viewers_thousands: 0.0, tvr_pct: 0.0}
+      - input: ref('stg_demographics')
+        rows:
+          - {demographic_id: 'D001', age_band: '16-34', gender: 'M', social_grade: 'ABC1'}
+          - {demographic_id: 'D002', age_band: '35-54', gender: 'F', social_grade: 'C2DE'}
+      - input: ref('stg_channels')
+        rows:
+          - {channel_id: 'MAIN', channel_name: 'MediaCo', broadcaster: 'MediaCo', is_media_company_portfolio: true, is_psb: true}
+          - {channel_id: 'EXTRA', channel_name: 'EXTRA', broadcaster: 'MediaCo', is_media_company_portfolio: true, is_psb: false}
+    expect:
+      rows:
+        # P001 on MAIN: avg tvr = (3.97+4.44)/2 = 4.205, sum viewers = 5300, hours = 2, has_consecutive_15min = true
+        - {channel_id: 'MAIN', programme_id: 'P001', demographic_id: 'D001', broadcast_date: '2025-03-15', tvr_pct: 4.205, programme_viewers_thousands: 5300.0, hours_in_programme: 2, has_consecutive_15min: true}
+        # P002 on EXTRA: avg tvr = 0.0, sum viewers = 0, hours = 1, has_consecutive_15min = false (viewers = 0)
+        - {channel_id: 'EXTRA', programme_id: 'P002', demographic_id: 'D002', broadcast_date: '2025-03-15', tvr_pct: 0.0, programme_viewers_thousands: 0.0, hours_in_programme: 1, has_consecutive_15min: false}

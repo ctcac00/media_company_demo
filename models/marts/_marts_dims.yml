@@ -1,0 +1,276 @@
+version: 2
+
+# Traceability:
+# CA-01 / CA-04 → demographics enum values (age_band, gender, social_grade) in dim_demographic
+# CA-05        → daypart_name values in dim_daypart
+# CA-11        → broadcaster values in dim_channel
+# CA-13        → broadcast_week_starts_monday (UK broadcast calendar)
+
+models:
+  - name: dim_programme
+    description: "Programme catalogue dimension. Grain: 1 row per programme_id."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: programme_id
+        data_type: varchar
+        description: "Primary key — programme identifier"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: title
+        data_type: varchar
+        description: "Programme title"
+        constraints:
+          - type: not_null
+      - name: genre
+        data_type: varchar
+        description: "Broad genre (drama/comedy/factual/entertainment/news/sport/film)"
+        constraints:
+          - type: not_null
+      - name: sub_genre
+        data_type: varchar
+        description: "Sub-genre within the main genre"
+      - name: is_original_uk
+        data_type: boolean
+        description: "True if an original UK commission"
+      - name: is_news_current_affairs
+        data_type: boolean
+        description: "True if classified as news/current affairs for Ofcom remit reporting"
+      - name: duration_min
+        data_type: integer
+        description: "Programme duration in minutes. Programmes with duration_min < 5 are trailers/promos."
+      - name: latest_series_number
+        data_type: integer
+        description: "Highest series number for this programme (0 if no episodes)"
+      - name: episode_count
+        data_type: integer
+        description: "Total number of episodes across all series"
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when this row was last refreshed by dbt"
+
+  - name: dim_channel
+    description: "Channel dimension including MAIN portfolio, competitor universe, and the 'streaming' AVOD sentinel row. Grain: 1 row per channel_id. Note: Sky One and Sky Atlantic both map to broadcaster='Sky'."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: channel_id
+        data_type: varchar
+        description: "Primary key — channel identifier"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: channel_name
+        data_type: varchar
+        description: "Human-readable channel name"
+        constraints:
+          - type: not_null
+      - name: broadcaster
+        data_type: varchar
+        description: "Parent broadcaster organisation (e.g. MediaCo, BBC, ITV, Sky)"
+        constraints:
+          - type: not_null
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['MediaCo', 'BBC', 'ITV', 'Sky', 'Channel 5', 'streaming']
+      - name: is_media_company_portfolio
+        data_type: boolean
+        description: "True if this channel is part of the MediaCo portfolio"
+        constraints:
+          - type: not_null
+      - name: is_psb
+        data_type: boolean
+        description: "True if this channel has Public Service Broadcasting obligations"
+        constraints:
+          - type: not_null
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when this row was last refreshed by dbt"
+
+  - name: dim_advertiser
+    description: "Advertiser dimension. Grain: 1 row per advertiser_id."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: advertiser_id
+        data_type: varchar
+        description: "Primary key — advertiser identifier"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: advertiser_name
+        data_type: varchar
+        description: "Trading name of the advertiser"
+        constraints:
+          - type: not_null
+      - name: sector
+        data_type: varchar
+        description: "Industry sector of the advertiser"
+      - name: agency
+        data_type: varchar
+        description: "Media agency responsible for the advertiser's bookings"
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when this row was last refreshed by dbt"
+
+  - name: dim_demographic
+    description: "BARB demographic dimension. Grain: 1 row per demographic_id (16 rows — all combinations of 4 age bands × 2 genders × 2 social grades)."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: demographic_id
+        data_type: varchar
+        description: "Primary key — demographic segment identifier"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: age_band
+        data_type: varchar
+        description: "Age band for this demographic segment (e.g. 16-34, 35-54)"
+        constraints:
+          - type: not_null
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['4-15', '16-34', '35-54', '55+']
+      - name: gender
+        data_type: varchar
+        description: "Gender for this demographic segment"
+        constraints:
+          - type: not_null
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['M', 'F']
+      - name: social_grade
+        data_type: varchar
+        description: "NRS social grade (ABC1 or C2DE)"
+        constraints:
+          - type: not_null
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['ABC1', 'C2DE']
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when this row was last refreshed by dbt"
+
+  - name: dim_daypart
+    description: "UK TV daypart dimension. Grain: 1 row per daypart_id (6 rows)."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: daypart_id
+        data_type: varchar
+        description: "Primary key — daypart identifier"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: daypart_name
+        data_type: varchar
+        description: "Name of the daypart (e.g. breakfast, daytime, peak, late)"
+        constraints:
+          - type: not_null
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['breakfast', 'daytime', 'pre-peak', 'peak', 'post-peak', 'night']
+      - name: start_hour
+        data_type: integer
+        description: "Hour of day (0-23) at which the daypart begins"
+        constraints:
+          - type: not_null
+      - name: end_hour
+        data_type: integer
+        description: "Hour of day (0-23) at which the daypart ends (exclusive)"
+        constraints:
+          - type: not_null
+      - name: is_peak
+        data_type: boolean
+        description: "True if this daypart is the peak viewing slot (typically 17:30-22:30)"
+        constraints:
+          - type: not_null
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when this row was last refreshed by dbt"
+
+  - name: dim_date
+    description: "Date dimension covering 2020-2027. Includes both standard calendar and UK broadcast calendar columns (CA-13). broadcast_week_start is always a Monday. broadcast_month_of_quarter uses 4-4-5 convention."
+    config:
+      contract:
+        enforced: true
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "dayofweek(broadcast_week_start) = 1"
+          name: broadcast_week_starts_monday
+          config:
+            where: "broadcast_week_start is not null"
+    columns:
+      - name: date_day
+        data_type: date
+        description: "Primary key — calendar date"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: day_of_week_num
+        data_type: integer
+        description: "Day of week as integer (0=Sunday, 1=Monday, ..., 6=Saturday per Snowflake convention)"
+      - name: day_of_week_name
+        data_type: varchar
+        description: "Day of week name (e.g. Monday, Tuesday)"
+      - name: iso_week
+        data_type: integer
+        description: "ISO 8601 week number"
+      - name: calendar_month
+        data_type: integer
+        description: "Calendar month number (1-12)"
+      - name: calendar_quarter
+        data_type: integer
+        description: "Calendar quarter number (1-4)"
+      - name: calendar_year
+        data_type: integer
+        description: "Calendar year (e.g. 2024)"
+      - name: broadcast_week_start
+        data_type: date
+        description: "Monday of the UK broadcast week containing this date (CA-13)"
+      - name: broadcast_month_of_quarter
+        data_type: integer
+        description: "Month position within broadcast quarter (1=4wk, 2=4wk, 3=5wk per 4-4-5 convention)"
+      - name: broadcast_quarter
+        data_type: varchar
+        description: "Broadcast quarter label (e.g. 2024Q1)"
+      - name: is_weekend
+        data_type: boolean
+        description: "True if the date falls on a Saturday or Sunday"
+      - name: is_uk_bank_holiday
+        data_type: boolean
+        description: "Placeholder — currently always false"
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when this row was last refreshed by dbt"

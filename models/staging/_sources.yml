@@ -1,0 +1,40 @@
+version: 2
+
+sources:
+  - name: media_raw
+    database: "{{ var('source_database') }}"
+    schema: "{{ var('source_schema_prefix') }}"
+    description: "Raw media data loaded as dbt seeds (BARB-style, MediaCo Streaming, ad ops)"
+    tables:
+      - name: barb_minute_ratings
+        description: "BARB-style hourly audience panel data for linear TV (hourly grain — simplified from minute-level)"
+      - name: barb_consolidated_audience
+        description: "Overnight and C7 consolidated audience figures by programme"
+      - name: programmes
+        description: "Programme catalogue with title, genre, and PSB classification"
+      - name: episodes
+        description: "Episode-level metadata linked to programmes"
+      - name: schedule
+        description: "Linear broadcast schedule (EPG) for MediaCo-owned and competitor channels"
+      - name: channels
+        description: "MediaCo channel portfolio and competitor universe reference data"
+      - name: ad_campaigns
+        description: "Advertiser campaign bookings with budget and demographic targeting"
+      - name: ad_spots_linear
+        description: "Linear TV spot bookings and delivery actuals"
+      - name: ad_spots_avod
+        description: "MediaCo Streaming AVOD ad insertion events at impression level"
+      - name: advertisers
+        description: "Advertiser master with sector classification and agency"
+      - name: streaming_play_events
+        description: "MediaCo Streaming video play events (start, 25%, 50%, 75%, complete) per user session"
+      - name: streaming_sessions
+        description: "MediaCo Streaming user session summaries with platform and device info"
+      - name: streaming_users
+        description: "MediaCo Streaming registered user accounts with demographic linkage"
+      - name: demographics
+        description: "Standard BARB/UK demographic bands: age, gender, social grade"
+      - name: dayparts
+        description: "UK TV daypart definitions with hour boundaries"
+      - name: uk_population_baseline
+        description: "UK 4+ population baseline by year and demographic (CA-01 source)"

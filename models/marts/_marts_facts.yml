@@ -1,0 +1,346 @@
+version: 2
+
+# Traceability:
+# CA-01 → tvr_pct_non_negative
+# CA-03 → share_of_viewing bounds (0–100%)
+# CA-06 → spot_delivery_ratio bounds, revenue_non_negative
+# CA-06 / CA-07 → platform enum in fct_ad_revenue
+# CA-09 → completion_rate bounds (0–1), platform enum in fct_streaming_engagement
+
+models:
+  - name: fct_programme_audience_daily
+    description: "Daily programme audience facts from BARB data. Grain: 1 row per programme_id × channel_id × broadcast_date × demographic_id. TVR (CA-01), C7 consolidation (CA-02), share of viewing (CA-03), reach (CA-04)."
+    config:
+      contract:
+        enforced: true
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "tvr_pct >= 0 or tvr_pct is null"
+          name: tvr_pct_non_negative
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "share_of_viewing_pct >= 0 or share_of_viewing_pct is null"
+          name: share_of_viewing_non_negative
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "share_of_viewing_pct <= 100 or share_of_viewing_pct is null"
+          name: share_of_viewing_max_100
+    columns:
+      - name: programme_audience_daily_id
+        data_type: varchar
+        description: "Surrogate PK — md5 of programme_id, channel_id, broadcast_date, demographic_id"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: programme_id
+        data_type: varchar
+        description: "FK to dim_programme"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_programme')
+                field: programme_id
+      - name: channel_id
+        data_type: varchar
+        description: "FK to dim_channel"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_channel')
+                field: channel_id
+      - name: broadcast_date
+        data_type: date
+        description: "UK broadcast date"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+      - name: demographic_id
+        data_type: varchar
+        description: "FK to dim_demographic"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_demographic')
+                field: demographic_id
+      - name: tvr_pct
+        data_type: numeric(6,3)
+        description: "Television Rating — viewers as % of UK 4+ population (CA-01)"
+      - name: overnight_viewers_thousands
+        data_type: numeric(12,2)
+        description: "Overnight viewers in thousands"
+      - name: c7_viewers_thousands
+        data_type: numeric(12,2)
+        description: "Consolidated 7-day viewers in thousands (NULL until TX+8 per CA-02)"
+      - name: is_c7_consolidated
+        data_type: boolean
+        description: "True when c7_viewers_thousands is not null (CA-02)"
+      - name: share_of_viewing_pct
+        data_type: numeric(6,3)
+        description: "Channel's share of total UK TV viewing for this date/demographic (CA-03)"
+      - name: reach_15min_thousands
+        data_type: numeric(12,2)
+        description: "Viewers with consecutive 15-min viewing, approximated at hourly grain (CA-04)"
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when row was last refreshed"
+
+  - name: fct_ad_revenue
+    description: "Ad revenue fact combining linear TV spots and AVOD impressions. Grain: 1 row per channel_id × advertiser_id × campaign_id × daypart_id × broadcast_date × platform. AVOD rows have channel_id='streaming' and daypart_id=NULL."
+    config:
+      contract:
+        enforced: true
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "spot_delivery_ratio >= 0 or spot_delivery_ratio is null"
+          name: spot_delivery_ratio_non_negative
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "spot_delivery_ratio <= 2 or spot_delivery_ratio is null"
+          name: spot_delivery_ratio_max_two
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "actual_revenue_gbp >= 0"
+          name: revenue_non_negative
+    columns:
+      - name: ad_revenue_id
+        data_type: varchar
+        description: "Surrogate PK — md5 of channel_id, advertiser_id, campaign_id, daypart_id (coalesced), broadcast_date, platform"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: channel_id
+        data_type: varchar
+        description: "FK to dim_channel — 'streaming' sentinel for AVOD rows"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_channel')
+                field: channel_id
+                where: "channel_id is not null"
+      - name: advertiser_id
+        data_type: varchar
+        description: "FK to dim_advertiser"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_advertiser')
+                field: advertiser_id
+      - name: campaign_id
+        data_type: varchar
+        description: "Campaign identifier"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+      - name: daypart_id
+        data_type: varchar
+        description: "FK to dim_daypart — NULL for AVOD rows"
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_daypart')
+                field: daypart_id
+                where: "daypart_id is not null"
+      - name: broadcast_date
+        data_type: date
+        description: "UK broadcast date"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+      - name: platform
+        data_type: varchar
+        description: "Delivery platform (linear / avod)"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['linear', 'avod']
+      - name: impressions_thousands
+        data_type: numeric(14,2)
+        description: "Delivered impressions in thousands"
+      - name: booked_impressions_thousands
+        data_type: numeric(14,2)
+        description: "Booked (contracted) impressions in thousands"
+      - name: actual_revenue_gbp
+        data_type: numeric(14,2)
+        description: "Actual revenue recognised in GBP"
+      - name: rate_card_cpm_gbp
+        data_type: numeric(8,2)
+        description: "Rate card CPM in GBP (average across spots)"
+      - name: realised_cpm_gbp
+        data_type: numeric(8,2)
+        description: "Realised CPM in GBP — actual_revenue_gbp / impressions_thousands"
+      - name: spot_delivery_ratio
+        data_type: numeric(6,3)
+        description: "Delivered impressions / booked impressions — values < underdelivery_threshold flag under-delivery"
+      - name: is_under_delivered
+        data_type: boolean
+        description: "True when spot_delivery_ratio falls below the configured underdelivery_threshold var"
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when row was last refreshed"
+
+  - name: fct_streaming_engagement
+    description: "MediaCo Streaming streaming engagement facts per session × programme. Grain: 1 row per session_id × programme_id × broadcast_date. Excludes programmes < 5 min (CA-09)."
+    config:
+      contract:
+        enforced: true
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "completion_rate >= 0 or completion_rate is null"
+          name: completion_rate_non_negative
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "completion_rate <= 1 or completion_rate is null"
+          name: completion_rate_max_one
+    columns:
+      - name: streaming_engagement_id
+        data_type: varchar
+        description: "Surrogate PK — md5 of session_id, programme_id, broadcast_date"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: session_id
+        data_type: varchar
+        description: "Session identifier (pseudonymous device/browser session)"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+      - name: user_id
+        data_type: varchar
+        description: "Pseudonymous registered user identifier — NULL for unauthenticated sessions"
+      - name: programme_id
+        data_type: varchar
+        description: "FK to dim_programme"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_programme')
+                field: programme_id
+      - name: broadcast_date
+        data_type: date
+        description: "Date the programme originally aired (used for AVOD attribution)"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+      - name: platform
+        data_type: varchar
+        description: "Streaming platform (web / ios / android / ctv)"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['web', 'ios', 'android', 'ctv']
+      - name: device_type
+        data_type: varchar
+        description: "Device category (mobile / tablet / desktop / smart_tv)"
+      - name: session_duration_min
+        data_type: numeric(8,2)
+        description: "Total session duration in minutes"
+      - name: video_starts
+        data_type: integer
+        description: "Number of video start events in the session"
+      - name: video_completes
+        data_type: integer
+        description: "Number of video complete events in the session"
+      - name: completion_rate
+        data_type: numeric(6,3)
+        description: "video_completes / video_starts — proportion of started videos watched to completion"
+      - name: is_new_user
+        data_type: boolean
+        description: "True if this is the user's first session on MediaCo Streaming"
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when row was last refreshed"
+
+  - name: fct_audience_reach_quarterly
+    description: "Quarterly audience reach for Ofcom reporting. Grain: 1 row per channel_id × demographic_id × broadcast_quarter. Reach is based on consecutive 15-minute viewing (approximated at hourly grain). CA-04, CA-10."
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: audience_reach_quarterly_id
+        data_type: varchar
+        description: "Surrogate PK — md5 of channel_id, demographic_id, broadcast_quarter"
+        constraints:
+          - type: not_null
+          - type: unique
+        tests:
+          - not_null
+          - unique
+      - name: channel_id
+        data_type: varchar
+        description: "FK to dim_channel"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_channel')
+                field: channel_id
+      - name: demographic_id
+        data_type: varchar
+        description: "FK to dim_demographic"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_demographic')
+                field: demographic_id
+      - name: broadcast_quarter
+        data_type: varchar
+        description: "Broadcast quarter label (e.g. 2024Q1) — year + Q + quarter number"
+        constraints:
+          - type: not_null
+        tests:
+          - not_null
+      - name: reach_thousands
+        data_type: numeric(14,2)
+        description: "Audience reach in thousands — sum of consecutive 15-min viewers across the quarter"
+      - name: reach_pct_uk_population
+        data_type: numeric(8,3)
+        description: "Reach as percentage of UK population for this demographic"
+      - name: is_15min_consecutive
+        data_type: boolean
+        description: "Always true — flags that this reach metric uses the consecutive 15-min definition"
+      - name: _dbt_updated_at
+        data_type: timestamp_tz
+        description: "Timestamp when row was last refreshed"

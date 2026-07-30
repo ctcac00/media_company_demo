@@ -1,0 +1,284 @@
+version: 2
+
+models:
+  - name: int_programme_schedule_enriched
+    description: >
+      Schedule slots enriched with programme, episode, and channel metadata.
+      Grain: 1 row per channel × broadcast_date × start_time.
+      is_simulcast is always false in seed v1 — placeholder for future simulcast detection.
+    config:
+      materialized: view
+    columns:
+      - name: broadcast_date
+        description: "UK broadcast date"
+        tests:
+          - not_null
+      - name: channel_id
+        description: "Channel identifier"
+        tests:
+          - not_null
+      - name: start_time
+        description: "Programme start time (timestamp)"
+        tests:
+          - not_null
+      - name: programme_id
+        description: "Programme identifier"
+      - name: genre
+        description: "Programme genre"
+      - name: broadcast_hour
+        description: "Hour of broadcast derived from start_time, used for daypart resolution"
+      - name: slot_duration_min
+        description: "Duration of the schedule slot in minutes"
+      - name: is_simulcast
+        description: "Placeholder — always false in seed v1. Future: true when programme airs simultaneously on linear and MediaCo Streaming"
+
+  - name: int_barb_audience_with_demographics
+    description: >
+      Daily BARB audience aggregated from hourly seed, enriched with demographic and channel attributes.
+      Grain: 1 row per channel × programme × broadcast_date × demographic_id.
+      Consecutive 15-minute reach is approximated at hourly grain — exact window functions would require
+      minute-level data (CA-04).
+    config:
+      materialized: view
+    columns:
+      - name: channel_id
+        description: "Channel identifier"
+        tests:
+          - not_null
+      - name: programme_id
+        description: "Programme identifier"
+        tests:
+          - not_null
+      - name: broadcast_date
+        description: "UK broadcast date"
+        tests:
+          - not_null
+      - name: demographic_id
+        description: "Demographic segment identifier"
+        tests:
+          - not_null
+      - name: tvr_pct
+        description: "Television rating as a percentage of the target demographic, averaged across the programme"
+      - name: programme_viewers_thousands
+        description: "Total viewers in thousands for the programme on this date"
+      - name: hours_in_programme
+        description: "Number of broadcast hours counted for the programme on this date"
+      - name: has_consecutive_15min
+        description: "Approximation flag: true when programme has viewers > 0 for at least 1 continuous hour"
+      - name: consecutive_15min_viewers_thousands
+        description: "Viewers in thousands qualifying for consecutive 15-min reach approximation"
+      - name: age_band
+        description: "Demographic age band"
+      - name: gender
+        description: "Demographic gender"
+      - name: social_grade
+        description: "Demographic social grade (NRS classification)"
+      - name: channel_name
+        description: "Human-readable channel name"
+      - name: broadcaster
+        description: "Broadcaster organisation"
+      - name: is_media_company_portfolio
+        description: "True if the channel belongs to the MediaCo portfolio"
+      - name: is_psb
+        description: "True if the channel is a Public Service Broadcaster"
+
+  - name: int_ad_spot_enriched_linear
+    description: >
+      Linear ad spots enriched with campaign, advertiser, and resolved daypart.
+      Grain: 1 row per spot_id.
+      spot_delivery_ratio and is_under_delivered implement CA-07.
+      realised_cpm_gbp implements CA-06.
+    config:
+      materialized: view
+    columns:
+      - name: spot_id
+        description: "Unique identifier for the ad spot"
+        tests:
+          - not_null
+          - unique
+      - name: campaign_id
+        description: "Campaign identifier"
+        tests:
+          - not_null
+      - name: advertiser_id
+        description: "Advertiser identifier"
+        tests:
+          - not_null
+      - name: broadcast_date
+        description: "Date the spot aired"
+        tests:
+          - not_null
+      - name: platform
+        description: "Always 'linear' for this model"
+        tests:
+          - not_null
+      - name: airing_time
+        description: "Timestamp when the spot aired"
+      - name: channel_id
+        description: "Channel on which the spot aired"
+      - name: duration_sec
+        description: "Duration of the spot in seconds"
+      - name: booked_impressions_thousands
+        description: "Impressions booked at campaign setup, in thousands"
+      - name: delivered_impressions_thousands
+        description: "Impressions actually delivered, in thousands"
+      - name: rate_card_cpm_gbp
+        description: "Rate card CPM in GBP"
+      - name: actual_revenue_gbp
+        description: "Actual revenue generated by this spot in GBP"
+      - name: campaign_name
+        description: "Name of the campaign"
+      - name: advertiser_name
+        description: "Name of the advertiser"
+      - name: sector
+        description: "Advertiser industry sector"
+      - name: agency
+        description: "Media agency managing the campaign"
+      - name: daypart_id
+        description: "Resolved daypart identifier based on airing_time"
+      - name: daypart_name
+        description: "Human-readable daypart name"
+      - name: spot_delivery_ratio
+        description: "Ratio of delivered to booked impressions (CA-07)"
+      - name: realised_cpm_gbp
+        description: "Actual CPM achieved in GBP (CA-06)"
+      - name: is_under_delivered
+        description: "True when spot_delivery_ratio is below the underdelivery_threshold var (CA-07)"
+
+  - name: int_ad_spot_enriched_avod
+    description: >
+      AVOD ad spots aggregated to daily grain (1 row per programme × campaign × broadcast_date).
+      channel_id is always 'streaming' (sentinel — matches dim_channel row).
+      daypart_id is NULL for AVOD (daypart-agnostic).
+      Booked impressions are pro-rata estimates from campaign totals (demo simplification).
+      Aggregated from impression-level source per user-approved design decision.
+    config:
+      materialized: view
+    columns:
+      - name: campaign_id
+        description: "Campaign identifier"
+        tests:
+          - not_null
+      - name: broadcast_date
+        description: "Date derived from impression served_at timestamp"
+        tests:
+          - not_null
+      - name: programme_id
+        description: "Programme the AVOD impression was served against"
+        tests:
+          - not_null
+      - name: platform
+        description: "Always 'avod' for this model"
+        tests:
+          - not_null
+      - name: channel_id
+        description: "Always 'streaming' — sentinel value matching dim_channel row for MediaCo Streaming"
+        tests:
+          - not_null
+      - name: advertiser_id
+        description: "Advertiser identifier, joined from campaign"
+      - name: daypart_id
+        description: "Always NULL for AVOD — daypart does not apply to on-demand viewing"
+      - name: rate_card_cpm_gbp
+        description: "Always NULL for AVOD — rate card CPM is not applicable at impression level"
+      - name: impressions_thousands
+        description: "Count of impressions served on this date for this programme × campaign, in thousands"
+      - name: actual_revenue_gbp
+        description: "Sum of revenue generated by impressions on this date"
+      - name: booked_impressions_thousands
+        description: "Pro-rata daily booked impressions estimated from campaign total budget (demo simplification: budget / days / 30 CPM)"
+      - name: realised_cpm_gbp
+        description: "Actual CPM achieved in GBP (actual_revenue / impressions)"
+      - name: spot_delivery_ratio
+        description: "Ratio of delivered to estimated booked impressions"
+      - name: advertiser_name
+        description: "Name of the advertiser"
+      - name: sector
+        description: "Advertiser industry sector"
+      - name: agency
+        description: "Media agency managing the campaign"
+
+  - name: int_streaming_session_enriched
+    description: >
+      MediaCo Streaming sessions enriched with play event aggregates, user demographics, and programme engagement.
+      Grain: 1 row per session_id × programme_id.
+      Programmes with duration_min < 5 excluded per CA-09 (trailers/promos).
+    config:
+      materialized: view
+    columns:
+      - name: session_id
+        description: "Unique session identifier"
+        tests:
+          - not_null
+      - name: programme_id
+        description: "Programme identifier for the content watched in this session"
+        tests:
+          - not_null
+      - name: broadcast_date
+        description: "Date derived from the first play event timestamp in the session"
+        tests:
+          - not_null
+      - name: platform
+        description: "Viewing platform (e.g. web, ios, android, ctv)"
+        tests:
+          - not_null
+      - name: user_id
+        description: "MediaCo Streaming registered user identifier"
+      - name: device_type
+        description: "Device category used for this session"
+      - name: is_new_user
+        description: "True if this was the user's first session on MediaCo Streaming"
+      - name: video_starts
+        description: "Number of start events in this session for this programme"
+      - name: video_completes
+        description: "Number of complete events in this session for this programme"
+      - name: session_duration_min
+        description: "Duration from first to last play event in minutes"
+      - name: completion_rate
+        description: "Ratio of video completes to video starts"
+      - name: age_band
+        description: "Registered user demographic age band"
+      - name: gender
+        description: "Registered user demographic gender"
+      - name: social_grade
+        description: "Registered user demographic social grade (NRS classification)"
+
+  - name: int_overnight_to_c7_uplift
+    description: >
+      Programme-level C7 uplift calculation.
+      Grain: 1 row per programme_id (latest broadcast where C7 is available,
+      i.e. broadcast_date >= current_date - 8 days per CA-02).
+      Used for BQ-12 genre-level overnight-to-C7 uplift analysis.
+    config:
+      materialized: view
+    columns:
+      - name: programme_id
+        description: "Programme identifier"
+        tests:
+          - not_null
+      - name: broadcast_date
+        description: "Date of the latest qualifying broadcast for this programme"
+        tests:
+          - not_null
+      - name: overnight_viewers_thousands
+        description: "Overnight audience in thousands"
+        tests:
+          - not_null
+      - name: channel_id
+        description: "Channel on which the programme aired"
+      - name: c7_viewers_thousands
+        description: "Consolidated 7-day audience in thousands"
+      - name: c7_reach_thousands
+        description: "Consolidated 7-day reach in thousands"
+      - name: c7_uplift_pct
+        description: "Percentage uplift from overnight to C7 audience (CA-02)"
+      - name: is_c7_consolidated
+        description: "True when C7 data is present (broadcast_date is 8+ days ago)"
+      - name: genre
+        description: "Programme genre from the schedule"
+      - name: sub_genre
+        description: "Programme sub-genre from the schedule"
+      - name: is_original_uk
+        description: "True if the programme is an original UK production"
+      - name: is_news_current_affairs
+        description: "True if the programme is classified as news or current affairs"

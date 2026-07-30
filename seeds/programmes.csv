@@ -1,0 +1,66 @@
+programme_id,title,genre,sub_genre,is_original_uk,is_news_current_affairs,duration_min
+P001,The Great British Bake Off,entertainment,reality,True,False,60
+P002,Gogglebox,entertainment,reality,True,False,60
+P003,Hollyoaks,drama,soap,True,False,30
+P004,MediaCo News,news,news_bulletin,True,True,55
+P005,Countdown,entertainment,gameshow,True,False,45
+P006,The IT Crowd,comedy,sitcom,True,False,30
+P007,Peep Show,comedy,sitcom,True,False,30
+P008,Dispatches,factual,documentary,True,True,60
+P009,Grand Designs,factual,lifestyle,True,False,60
+P010,Unreported World,news,current_affairs,True,True,25
+P011,8 Out of 10 Cats,comedy,panel_show,True,False,60
+P012,First Dates,entertainment,reality,True,False,60
+P013,Taskmaster,comedy,gameshow,True,False,60
+P014,The Circle,entertainment,reality,True,False,60
+P015,SAS: Who Dares Wins,entertainment,reality,True,False,60
+P016,24 Hours in A&E,factual,documentary,True,False,60
+P017,Made in Chelsea,entertainment,reality,True,False,60
+P018,The Undateables,factual,documentary,True,False,60
+P019,Naked Attraction,entertainment,dating,True,False,60
+P020,Black Mirror,drama,sci_fi,True,False,60
+P021,It's A Sin,drama,period_drama,True,False,60
+P022,Humans,drama,sci_fi,True,False,60
+P023,Utopia,drama,thriller,True,False,60
+P024,Fresh Meat,comedy,sitcom,True,False,30
+P025,Derry Girls,comedy,sitcom,True,False,30
+P026,Big Bang Theory,comedy,sitcom,False,False,25
+P027,Frasier,comedy,sitcom,False,False,25
+P028,Brooklyn Nine-Nine,comedy,sitcom,False,False,25
+P029,Superstore,comedy,sitcom,False,False,25
+P030,The Simpsons,comedy,animation,False,False,25
+P031,MediaCo Movies Premiere: Dunkirk,film,action,False,False,116
+P032,MediaCo Movies Premiere: La La Land,film,musical,False,False,128
+P033,MediaCo Movies Premiere: Midsommar,film,horror,False,False,148
+P034,MediaCo Movies Premiere: Parasite,film,thriller,False,False,132
+P035,MediaCo Movies Premiere: Dune,film,sci_fi,False,False,155
+P036,24 Hours in Police Custody,factual,documentary,True,False,60
+P037,Ramsay's Kitchen Nightmares,factual,lifestyle,True,False,60
+P038,Come Dine with Me,entertainment,reality,True,False,60
+P039,Embarrassing Bodies,factual,health,True,False,60
+P040,Time Team,factual,history,True,False,60
+P041,Hollyoaks Omnibus,drama,soap,True,False,120
+P042,Friends,comedy,sitcom,False,False,25
+P043,How I Met Your Mother,comedy,sitcom,False,False,25
+P044,The Inbetweeners,comedy,sitcom,True,False,25
+P045,Skins,drama,teen_drama,True,False,45
+P046,Formula 1 Highlights,sport,motorsport,False,False,60
+P047,Paralympics 2025,sport,athletics,False,False,120
+P048,Cricket: The Ashes,sport,cricket,False,False,180
+P049,Rugby League World Cup,sport,rugby,False,False,90
+P050,World Snooker Championship,sport,snooker,False,False,120
+P051,MediaCo News at 7,news,news_bulletin,True,True,30
+P052,Presenter's MediaCo Debates,news,current_affairs,True,True,60
+P053,Steph's Packed Lunch,news,magazine,True,False,90
+P054,Arrested Development,comedy,sitcom,False,False,25
+P055,Location Location Location,factual,property,True,False,60
+P056,Secret Eaters,factual,health,True,False,60
+P057,Educating Yorkshire,factual,documentary,True,False,60
+P058,Benefits Street,factual,documentary,True,False,60
+P059,Celebrity Big Brother,entertainment,reality,True,False,90
+P060,Deal or No Deal,entertainment,gameshow,True,False,45
+P061,MediaCo Catchup Best Of Bake Off,entertainment,reality,True,False,60
+P062,MediaCo Catchup Best Of Gogglebox,entertainment,reality,True,False,60
+P063,MediaCo Promo: Autumn Highlights,entertainment,promo,True,False,2
+P064,EXTRA Continuity Trailer,entertainment,promo,True,False,1
+P065,MediaCo Movies Promo Reel,entertainment,promo,True,False,3

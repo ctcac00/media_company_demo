@@ -1,0 +1,27 @@
+unit_tests:
+  - name: test_linear_spot_delivery_and_cpm
+    model: int_ad_spot_enriched_linear
+    description: "Validates spot_delivery_ratio, realised_cpm_gbp, and is_under_delivered flag (CA-06, CA-07)"
+    given:
+      - input: ref('stg_ad_spots_linear')
+        rows:
+          # Under-delivered spot: 800 delivered / 1000 booked = 0.80 < 0.95
+          - {spot_id: 'SP001', campaign_id: 'C001', broadcast_date: '2025-03-15', airing_time: '2025-03-15 20:00:00', channel_id: 'MAIN', daypart: 'peak', duration_sec: 30, booked_impressions_thousands: 1000.0, delivered_impressions_thousands: 800.0, rate_card_cpm_gbp: 25.0, actual_revenue_gbp: 20000.0}
+          # Fully delivered spot: 1000 delivered / 1000 booked = 1.0 >= 0.95
+          - {spot_id: 'SP002', campaign_id: 'C001', broadcast_date: '2025-03-15', airing_time: '2025-03-15 09:00:00', channel_id: 'MAIN', daypart: 'daytime', duration_sec: 30, booked_impressions_thousands: 500.0, delivered_impressions_thousands: 500.0, rate_card_cpm_gbp: 12.0, actual_revenue_gbp: 6000.0}
+      - input: ref('stg_ad_campaigns')
+        rows:
+          - {campaign_id: 'C001', advertiser_id: 'A001', campaign_name: 'Test Campaign', start_date: '2025-01-01', end_date: '2025-12-31', total_budget_gbp: 500000.0, target_demographic_id: 'D001'}
+      - input: ref('stg_advertisers')
+        rows:
+          - {advertiser_id: 'A001', advertiser_name: 'Test Brand', sector: 'retail', agency: 'Test Agency'}
+      - input: ref('stg_dayparts')
+        rows:
+          - {daypart_id: 'DP_PEAK', daypart_name: 'peak', start_hour: 19, end_hour: 22}
+          - {daypart_id: 'DP_DAYTIME', daypart_name: 'daytime', start_hour: 9, end_hour: 17}
+    expect:
+      rows:
+        # SP001: delivery_ratio=0.8, realised_cpm=20000/800=25.0, is_under_delivered=true
+        - {spot_id: 'SP001', spot_delivery_ratio: 0.8, realised_cpm_gbp: 25.0, is_under_delivered: true, platform: 'linear'}
+        # SP002: delivery_ratio=1.0, realised_cpm=6000/500=12.0, is_under_delivered=false
+        - {spot_id: 'SP002', spot_delivery_ratio: 1.0, realised_cpm_gbp: 12.0, is_under_delivered: false, platform: 'linear'}

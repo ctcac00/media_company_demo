@@ -1,0 +1,213 @@
+# project-config.yaml — Single entry point for all framework configuration
+# Copy to project-config.yaml and fill in your values.
+# The dbt-infra agent reads this file to generate terraform.tfvars, .mcp.json, and profiles.yml.
+#
+# SENSITIVE values (tokens, passwords, keys) go in .env — never in this file.
+
+# ─── Governance Tier ─────────────────────────────────────────────────────────
+# Controls which checks, contracts, and artifacts the agents enforce.
+# See docs/governance-tiers.md for details on each tier.
+#
+#   basic      — naming + PK/FK tests only (startups, demos)
+#   standard   — + dbt contracts, PII classification, freshness, versioning (default)
+#   governed   — + ODCS contracts (interop format), attestations (regulated industries)
+#   enterprise — + metrics library, cross-project governance (data mesh)
+#
+# dbt is ALWAYS the engine. ODCS is an interoperability layer for governed+,
+# not a replacement for dbt contracts/tests.
+governance:
+  tier: "standard"
+
+# ─── Warehouse Platform ──────────────────────────────────────────────────────
+# Which warehouse to use. Determines which terraform/{platform}/ directory to apply.
+warehouse_platform: "snowflake"  # snowflake | bigquery | databricks
+
+# ─── dbt Platform ────────────────────────────────────────────────────────────
+dbt_platform:
+  account_id: 664                          # REPLACE: your dbt Platform account ID
+  host_url: "https://sa318.eu1.dbt.com/api"    # REPLACE: see docs/regions.md
+  project_name: "media_company_demo"               # REPLACE
+  dbt_version: "latest-fusion"               # versionless | latest-fusion | X.Y.0-latest
+
+# ─── Git Repository ──────────────────────────────────────────────────────────
+# Supported providers: github, gitlab, azure_devops
+# Each provider has different clone strategies and required fields.
+git:
+  provider: "github"                         # github | gitlab | azure_devops
+  remote_url: "git@github.com:ctcac00/media_company_demo.git"  # REPLACE
+  branch: "main"                             # branch for all environments
+
+  # ── GitHub (provider: github) ──────────────────────────────────────────────
+  # Clone strategy: github_app (recommended) or deploy_key
+  github:
+    clone_strategy: "github_app"             # github_app | deploy_key
+    installation_id: 83813806               # REPLACE: see docs/find-github-installation-id.md
+    # For deploy_key, the key is set via env var: TF_VAR_git_deploy_key
+
+  # ── GitLab (provider: gitlab) ──────────────────────────────────────────────
+  # Clone strategy: deploy_token (recommended) or deploy_key
+  # gitlab:
+  #   clone_strategy: "deploy_token"
+  #   project_id: 12345678                   # GitLab project ID (Settings → General)
+  #   # Deploy token credentials go in .env:
+  #   #   export TF_VAR_gitlab_deploy_token_username="deploy-token-username"
+  #   #   export TF_VAR_gitlab_deploy_token="gldt-xxxxxxxxxxxx"
+
+  # ── Azure DevOps (provider: azure_devops) ──────────────────────────────────
+  # Clone strategy: azure_active_directory_app
+  # azure_devops:
+  #   clone_strategy: "azure_active_directory_app"
+  #   tenant_id: "00000000-0000-0000-0000-000000000000"    # Azure AD tenant
+  #   project_url: "https://dev.azure.com/MY_ORG/MY_PROJECT"
+  #   # App credentials go in .env:
+  #   #   export TF_VAR_azure_ad_app_client_id="..."
+  #   #   export TF_VAR_azure_ad_app_client_secret="..."
+
+# ─── Warehouse Connection ────────────────────────────────────────────────────
+# Fill only the section matching your warehouse_platform.
+# Each warehouse supports multiple authentication methods.
+
+snowflake:
+  account: "zna84829"          # REPLACE: e.g. zna84829
+  database: "CCASTRO_SANDBOX"        # REPLACE
+  warehouse: "SA_CCASTRO"      # REPLACE
+  role: ""                       # optional, leave empty for default
+  auth_method: "keypair"        # password | keypair
+  # ── password auth ──
+  user: "CARLOS_CASTRO"                # REPLACE
+  # Password goes in .env: export TF_VAR_snowflake_password="..."
+  # ── keypair auth ──
+  # user: "MY_SERVICE_USER"
+  # Private key goes in .env: export TF_VAR_snowflake_private_key="..."
+  # Passphrase (optional): export TF_VAR_snowflake_private_key_passphrase="..."
+
+bigquery:
+  gcp_project_id: "MY_GCP_PROJECT"           # REPLACE
+  location: "US"                              # US, EU, us-central1, etc.
+  auth_method: "service_account"              # service_account | oauth
+  timeout_seconds: 300
+  retries: 1
+  # ── service_account auth ──
+  client_email: "sa@my-project.iam.gserviceaccount.com"  # REPLACE
+  client_id: "000000000000000000000"                      # REPLACE
+  client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/sa%40my-project.iam.gserviceaccount.com"
+  # Keys go in .env:
+  #   export TF_VAR_bigquery_private_key_id="..."
+  #   export TF_VAR_bigquery_private_key="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----\n"
+  # ── oauth auth ──
+  # No service account needed — uses the user's OAuth token.
+  # Requires dbt Platform OAuth integration configured in Account Settings.
+
+databricks:
+  host: "https://dbc-a1b2c3d4-e5f6.cloud.databricks.com"  # REPLACE
+  http_path: "/sql/1.0/warehouses/abc123def456"              # REPLACE
+  catalog: "analytics"                                        # REPLACE: Unity Catalog name
+  auth_method: "token"                                        # token | oauth
+  # ── token auth (PAT) ──
+  # Token goes in .env: export TF_VAR_databricks_token="dapi..."
+  # ── oauth auth (service principal) ──
+  # Requires Databricks OAuth app configured.
+  # Credentials go in .env:
+  #   export TF_VAR_databricks_client_id="..."
+  #   export TF_VAR_databricks_client_secret="..."
+
+# ─── Environments / Schemas ──────────────────────────────────────────────────
+schemas:
+  prefix: "dbt_media_company_demo"        # REPLACE: schemas = {prefix}_dev / {prefix}_staging / {prefix}_prod
+  development: "dev"
+  staging: "staging"
+  production: "prod"
+
+# ─── Source Schemas ───────────────────────────────────────────────────────────
+# Define where source tables live. Agents use these values to generate source
+# YAMLs with dbt vars, making them dynamic across environments.
+#
+# Each source maps to a database and schema. The agents generate:
+#   database: "{{ var('source_database') }}"
+#   schema:   "{{ var('source_schema_prefix') }}_{source_name}"
+#
+# If all sources share the same database, set source_database once.
+# If sources use different databases, override per source below.
+sources:
+  source_database: "CCASTRO_SANDBOX"           # REPLACE: default database for all sources
+  source_schema_prefix: "dbt_media_company_demo_source"  # REPLACE: prefix for source schemas (e.g. dbt_sduran)
+  # Per-source overrides (optional — only if a source uses a different database/schema):
+  # overrides:
+  #   core_banking:
+  #     database: "RAW_DATA"
+  #     schema: "core_banking_raw"
+  #   reference_data:
+  #     schema: "ref_data"
+  #
+  # Production overrides (optional — for real projects where prod reads from different schemas):
+  # If omitted, production uses the same values as dev/staging (useful for demos with seeds).
+  # production:
+  #   source_database: "RAW_DATA"
+  #   source_schema_prefix: "raw"
+
+# ─── Jobs ────────────────────────────────────────────────────────────────────
+jobs:
+  daily_schedule_hours: [6]      # UTC hours for the daily build
+
+# ─── Data Classification ─────────────────────────────────────────────────────
+# Controls how agents classify columns for PII/sensitivity.
+# All projects get: pattern matching (column names) + LLM judgment (context).
+# Data sampling is opt-in — it queries actual data values to detect PII in
+# ambiguous columns (e.g., a "notes" field containing emails).
+classification:
+  enable_sampling: false           # true = agents may run SELECT DISTINCT on dev/staging
+  sampling_environment: "dev"      # dev | staging — NEVER prod
+  sampling_limit: 100              # max rows to sample per column
+
+# ─── Webhook (dbt-ops automated alerting) ────────────────────────────────────
+# Set endpoint_url to enable automatic failure diagnosis via dbt-ops agent.
+# dbt Platform sends a POST on job completion. Your handler verifies HMAC,
+# filters failures, and launches Claude Code headless for diagnosis.
+# Leave empty to disable.
+webhook:
+  endpoint_url: ""                 # e.g. "https://my-cloud-function.cloud/dbt-webhook"
+
+# ─── Preflight ───────────────────────────────────────────────────────────────
+# Validates warehouse credentials before creating resources.
+# Snowflake: uses snow/snowsql CLI (prevents account lockout)
+# BigQuery: uses bq CLI
+# Databricks: uses curl
+# Set to true to skip if CLI is unavailable or validation fails for network reasons.
+preflight:
+  skip_validation: false
+
+# ─── MCP Server (auto-generated after deploy) ────────────────────────────────
+# After Phase 6, the dbt-infra agent generates .mcp.json from terraform outputs.
+# Set to true to enable automatic generation.
+mcp:
+  auto_generate: true
+
+# ─── SENSITIVE — export these as env vars, never write them here ─────────────
+# cp .env.example .env && chmod 600 .env
+#
+# All platforms:
+#   export TF_VAR_dbt_token="dbtc_..."
+#
+# Snowflake (password):
+#   export TF_VAR_snowflake_password="..."
+# Snowflake (keypair):
+#   export TF_VAR_snowflake_private_key="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----\n"
+#   export TF_VAR_snowflake_private_key_passphrase="..."   # optional
+#
+# BigQuery (service_account):
+#   export TF_VAR_bigquery_private_key_id="..."
+#   export TF_VAR_bigquery_private_key="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----\n"
+#
+# Databricks (token):
+#   export TF_VAR_databricks_token="dapi..."
+# Databricks (oauth):
+#   export TF_VAR_databricks_client_id="..."
+#   export TF_VAR_databricks_client_secret="..."
+#
+# GitLab:
+#   export TF_VAR_gitlab_deploy_token_username="..."
+#   export TF_VAR_gitlab_deploy_token="gldt-..."
+#
+# Azure DevOps:
+#   export TF_VAR_azure_ad_app_client_id="..."
+#   export TF_VAR_azure_ad_app_client_secret="..."

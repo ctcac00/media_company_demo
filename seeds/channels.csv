@@ -1,0 +1,14 @@
+channel_id,channel_name,broadcaster,is_media_company_portfolio,is_psb
+MAIN,MediaCo,MediaCo,True,True
+EXTRA,EXTRA,MediaCo,True,False
+FACTUAL,MediaCo Factual,MediaCo,True,False
+MOVIES,MediaCo Movies,MediaCo,True,False
+CATCHUP,MediaCo Catchup,MediaCo,True,False
+streaming,MediaCo Streaming (AVOD),MediaCo,True,True
+BBC1,BBC One,BBC,False,True
+BBC2,BBC Two,BBC,False,True
+ITV1,ITV1,ITV,False,True
+ITV2,ITV2,ITV,False,False
+CHAN5,Channel 5,Channel 5,False,True
+SKYONE,Sky One,Sky,False,False
+SKYATL,Sky Atlantic,Sky,False,False

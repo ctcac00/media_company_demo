@@ -1,0 +1,382 @@
+version: 2
+
+seeds:
+  - name: barb_minute_ratings
+    description: >
+      BARB audience ratings at hourly grain (simplified from true per-minute BARB data for seed/demo
+      purposes). Each row represents one hour of viewing on a channel for a demographic group.
+      Covers a representative sample of dates across 2025 — not every channel/hour combination.
+      MAIN peak TVR ranges 3–8%; BBC1 peak 10–20%.
+    config:
+      column_types:
+        broadcast_date: date
+        broadcast_hour: integer
+        viewers_thousands: float
+        tvr_pct: float
+        _loaded_at: timestamp
+    columns:
+      - name: broadcast_date
+        description: Date of broadcast.
+      - name: broadcast_hour
+        description: Hour of broadcast (0–23, hourly grain).
+      - name: channel_id
+        description: FK to channels.channel_id.
+      - name: programme_id
+        description: FK to programmes.programme_id.
+      - name: demographic_id
+        description: FK to demographics.demographic_id.
+      - name: viewers_thousands
+        description: Estimated viewers in thousands for this hour/channel/demographic.
+      - name: tvr_pct
+        description: Television Rating as a percentage of the universe.
+      - name: _loaded_at
+        description: Timestamp when this row was loaded into the warehouse.
+
+  - name: barb_consolidated_audience
+    description: >
+      BARB consolidated audience figures by programme. Overnight figures are available immediately
+      after broadcast; C7 (consolidated+7 days) figures are NULL for the most recent 7 days
+      (simulates the TX+8 data availability rule where C7 data arrives 8 days after transmission).
+      MAIN flagship shows typically achieve 4–6M C7 viewers.
+    config:
+      column_types:
+        broadcast_date: date
+        overnight_viewers_thousands: float
+        c7_viewers_thousands: float
+        c7_reach_thousands: float
+        _loaded_at: timestamp
+    columns:
+      - name: broadcast_date
+        description: Date of broadcast.
+      - name: programme_id
+        description: FK to programmes.programme_id.
+      - name: channel_id
+        description: FK to channels.channel_id.
+      - name: overnight_viewers_thousands
+        description: Overnight audience in thousands.
+      - name: c7_viewers_thousands
+        description: >
+          Consolidated+7 audience in thousands. NULL for the most recent 7 days of data
+          (TX+8 rule — C7 figures are not yet available).
+      - name: c7_reach_thousands
+        description: >
+          Consolidated+7 reach in thousands. NULL for the most recent 7 days of data.
+      - name: _loaded_at
+        description: Timestamp when this row was loaded.
+
+  - name: programmes
+    description: >
+      Master catalogue of TV programmes. Includes MediaCo originals, acquired content,
+      films, news, sport, and short promos. Rows with duration_min < 5 are trailers/promos
+      and should be excluded from audience and advertising analyses (CA-09).
+    config:
+      column_types:
+        is_original_uk: boolean
+        is_news_current_affairs: boolean
+        duration_min: integer
+    columns:
+      - name: programme_id
+        description: Primary key.
+      - name: title
+        description: Programme title.
+      - name: genre
+        description: Top-level genre (drama/comedy/factual/entertainment/news/sport/film).
+      - name: sub_genre
+        description: Sub-genre classification.
+      - name: is_original_uk
+        description: True if this is a UK original production.
+      - name: is_news_current_affairs
+        description: True if the programme is classified as news or current affairs (Ofcom PSB obligation).
+      - name: duration_min
+        description: Nominal episode duration in minutes. Values < 5 indicate trailers/promos.
+
+  - name: episodes
+    description: Individual episodes of programmes, with series/episode numbering and first TX date.
+    config:
+      column_types:
+        first_tx_date: date
+        series_number: integer
+        episode_number: integer
+    columns:
+      - name: episode_id
+        description: Primary key.
+      - name: programme_id
+        description: FK to programmes.programme_id.
+      - name: series_number
+        description: Series/season number.
+      - name: episode_number
+        description: Episode number within the series.
+      - name: first_tx_date
+        description: Date of first transmission.
+      - name: synopsis
+        description: Short episode synopsis.
+
+  - name: schedule
+    description: >
+      Electronic Programme Guide (EPG) data for MAIN portfolio channels (MAIN, EXTRA, MediaCo Factual,
+      MediaCo Movies, MediaCo Catchup) across a representative sample of weeks in 2025. start_time and
+      end_time are full ISO-8601 timestamps.
+    config:
+      column_types:
+        broadcast_date: date
+        start_time: timestamp
+        end_time: timestamp
+    columns:
+      - name: broadcast_date
+        description: Broadcast date.
+      - name: channel_id
+        description: FK to channels.channel_id.
+      - name: start_time
+        description: Programme start timestamp.
+      - name: end_time
+        description: Programme end timestamp.
+      - name: programme_id
+        description: FK to programmes.programme_id.
+      - name: episode_id
+        description: FK to episodes.episode_id (may be empty for some entries).
+
+  - name: channels
+    description: >
+      Channel reference table. Covers the 11 channels used in BARB ratings plus the
+      'streaming' sentinel row required by fct_ad_revenue to correctly attribute AVOD ad
+      revenue. is_media_company_portfolio = true for MAIN, EXTRA, MediaCo Factual, MediaCo Movies, MediaCo Catchup, and MediaCo Streaming (AVOD).
+      Broadcaster values are constrained to: MediaCo, BBC, ITV, Sky, Channel 5.
+    config:
+      column_types:
+        is_media_company_portfolio: boolean
+        is_psb: boolean
+    columns:
+      - name: channel_id
+        description: Primary key. 'streaming' is the AVOD sentinel for digital streaming revenue.
+      - name: channel_name
+        description: Display name.
+      - name: broadcaster
+        description: Parent broadcaster (MediaCo / BBC / ITV / Sky / Channel 5).
+      - name: is_media_company_portfolio
+        description: True for all MediaCo-owned channels and the MediaCo Streaming AVOD property.
+      - name: is_psb
+        description: True if the channel holds a Public Service Broadcasting licence.
+
+  - name: ad_campaigns
+    description: Advertising campaigns run by advertisers on MediaCo linear and AVOD inventory.
+    config:
+      column_types:
+        start_date: date
+        end_date: date
+        total_budget_gbp: float
+    columns:
+      - name: campaign_id
+        description: Primary key.
+      - name: advertiser_id
+        description: FK to advertisers.advertiser_id.
+      - name: campaign_name
+        description: Campaign display name.
+      - name: start_date
+        description: Campaign start date.
+      - name: end_date
+        description: Campaign end date.
+      - name: total_budget_gbp
+        description: Total planned campaign budget in GBP.
+      - name: target_demographic_id
+        description: FK to demographics.demographic_id — the primary target audience.
+
+  - name: ad_spots_linear
+    description: >
+      Individual ad spot airings on linear (broadcast) channels. Approximately 5% of spots
+      have delivered_impressions_thousands below 95% of booked_impressions_thousands,
+      simulating under-delivery for use in CA-07 under-delivery analysis. Peak CPM £15–£35.
+    config:
+      column_types:
+        broadcast_date: date
+        airing_time: timestamp
+        duration_sec: integer
+        booked_impressions_thousands: float
+        delivered_impressions_thousands: float
+        rate_card_cpm_gbp: float
+        actual_revenue_gbp: float
+    columns:
+      - name: spot_id
+        description: Primary key.
+      - name: campaign_id
+        description: FK to ad_campaigns.campaign_id.
+      - name: broadcast_date
+        description: Date the spot aired.
+      - name: airing_time
+        description: Timestamp when the spot aired.
+      - name: channel_id
+        description: FK to channels.channel_id.
+      - name: daypart
+        description: Daypart (breakfast/daytime/pre-peak/peak/post-peak/night).
+      - name: duration_sec
+        description: Spot duration in seconds.
+      - name: booked_impressions_thousands
+        description: Impressions booked at campaign planning time (thousands).
+      - name: delivered_impressions_thousands
+        description: Actual impressions delivered (thousands). ~5% of rows are below 95% of booked.
+      - name: rate_card_cpm_gbp
+        description: Rate card CPM in GBP.
+      - name: actual_revenue_gbp
+        description: Revenue recognised for this spot in GBP.
+
+  - name: ad_spots_avod
+    description: >
+      Individual ad impressions served on the MediaCo Streaming AVOD platform. Each row is one
+      ad served during a play event (pre/mid/post-roll). AVOD CPM £20–£45.
+    config:
+      column_types:
+        served_at: timestamp
+        revenue_gbp: float
+    columns:
+      - name: impression_id
+        description: Primary key.
+      - name: campaign_id
+        description: FK to ad_campaigns.campaign_id.
+      - name: play_event_id
+        description: FK to streaming_play_events.event_id.
+      - name: served_at
+        description: Timestamp when the ad impression was served.
+      - name: programme_id
+        description: FK to programmes.programme_id — the programme during which the ad ran.
+      - name: ad_position
+        description: Ad position in the stream (pre/mid/post).
+      - name: device_type
+        description: Device type on which the ad was served.
+      - name: revenue_gbp
+        description: Revenue for this single impression in GBP.
+
+  - name: advertisers
+    description: Brands and agencies that book advertising on MediaCo properties.
+    columns:
+      - name: advertiser_id
+        description: Primary key.
+      - name: advertiser_name
+        description: Brand name.
+      - name: sector
+        description: Industry sector (auto/fmcg/retail/finance/telecom/travel).
+      - name: agency
+        description: Media agency managing the account.
+
+  - name: streaming_play_events
+    description: >
+      Streaming events from the MediaCo Streaming platform. Each row is one playback milestone event
+      (start, 25pct, 50pct, 75pct, complete) for a given user/session/episode combination.
+      Completion rates vary by genre (50–75%). Event chain per view: start is always present;
+      subsequent events only appear if the viewer reached that point.
+    config:
+      column_types:
+        event_timestamp: timestamp
+        position_sec: integer
+    columns:
+      - name: event_id
+        description: Primary key.
+      - name: event_timestamp
+        description: Timestamp of the playback event.
+      - name: user_id
+        description: FK to streaming_users.user_id.
+      - name: session_id
+        description: FK to streaming_sessions.session_id.
+      - name: programme_id
+        description: FK to programmes.programme_id.
+      - name: episode_id
+        description: FK to episodes.episode_id.
+      - name: event_type
+        description: Playback milestone (start/25pct/50pct/75pct/complete).
+      - name: position_sec
+        description: Playback position in seconds at the time of the event.
+      - name: platform
+        description: Streaming platform (web/ios/android/ctv).
+
+  - name: streaming_sessions
+    description: Viewing sessions on the MediaCo Streaming platform. One row per session start/end.
+    config:
+      column_types:
+        session_start: timestamp
+        session_end: timestamp
+        is_new_user: boolean
+    columns:
+      - name: session_id
+        description: Primary key.
+      - name: user_id
+        description: FK to streaming_users.user_id.
+      - name: session_start
+        description: Session start timestamp.
+      - name: session_end
+        description: Session end timestamp.
+      - name: platform
+        description: Platform (web/ios/android/ctv).
+      - name: device_type
+        description: Device type (desktop/mobile/tablet/smart_tv/streaming_stick).
+      - name: country
+        description: Two-letter ISO country code. All rows are GB for this seed.
+      - name: is_new_user
+        description: True if this is the user's first session (new registration).
+
+  - name: streaming_users
+    description: >
+      Registered MediaCo Streaming users. All rows have is_active = true so that downstream staging
+      models filtering on is_active = true include all seed rows, avoiding FK relationship
+      test failures.
+    config:
+      column_types:
+        registration_date: date
+        is_active: boolean
+    columns:
+      - name: user_id
+        description: Primary key.
+      - name: registration_date
+        description: Date the user registered their MediaCo Streaming account.
+      - name: demographic_id
+        description: FK to demographics.demographic_id.
+      - name: is_active
+        description: True if the user account is active. All demo rows set to true.
+
+  - name: demographics
+    description: >
+      BARB demographic universe. Exactly 16 rows — all combinations of 4 age bands
+      (4-15, 16-34, 35-54, 55+) × 2 genders (M, F) × 2 social grades (ABC1, C2DE).
+      Each row has exactly one unique demographic_id — no duplicate keys.
+    columns:
+      - name: demographic_id
+        description: Primary key (D001–D016).
+      - name: age_band
+        description: Age band (4-15/16-34/35-54/55+).
+      - name: gender
+        description: Gender (M/F).
+      - name: social_grade
+        description: Social grade (ABC1/C2DE).
+
+  - name: dayparts
+    description: >
+      Day-part definitions for linear TV scheduling and ad sales. Exactly 6 rows.
+      breakfast 6–9, daytime 9–17, pre-peak 17–19, peak 19–22, post-peak 22–24, night 0–6.
+    config:
+      column_types:
+        start_hour: integer
+        end_hour: integer
+    columns:
+      - name: daypart_id
+        description: Primary key.
+      - name: daypart_name
+        description: Day-part label.
+      - name: start_hour
+        description: Start hour (inclusive, 0–23).
+      - name: end_hour
+        description: End hour (exclusive, 1–24).
+
+  - name: uk_population_baseline
+    description: >
+      UK 4+ population estimates by year and demographic group. One row per year × demographic_id
+      (32 rows total: 16 demographics × years 2024 and 2025). Used to calculate TVR denominators.
+      Total 4+ population ≈ 63,000 thousands; split proportionally across demographics using
+      approximate UK age/gender/social-grade distributions.
+    config:
+      column_types:
+        year: integer
+        population_thousands: integer
+    columns:
+      - name: year
+        description: Calendar year (2024 or 2025).
+      - name: demographic_id
+        description: FK to demographics.demographic_id.
+      - name: population_thousands
+        description: Estimated population in thousands for this demographic group and year.

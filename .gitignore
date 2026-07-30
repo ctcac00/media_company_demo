@@ -1,0 +1,19 @@
+target/
+dbt_packages/
+logs/
+.env
+*.log
+profiles.yml
+.DS_Store
+dbt_internal_packages/
+
+# Terraform local artifacts
+**/.terraform/
+*.tfvars
+!*.tfvars.example
+terraform.tfstate
+terraform.tfstate.*
+*.tfplan
+*.tfplan.json
+crash.log
+crash.*.log

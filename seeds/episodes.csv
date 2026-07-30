@@ -1,0 +1,564 @@
+episode_id,programme_id,series_number,episode_number,first_tx_date,synopsis
+E00001,P001,1,1,2025-05-21,The competition heats up.
+E00002,P001,1,2,2025-04-25,The competition heats up.
+E00003,P001,1,3,2025-02-22,A fan favourite returns for a special challenge.
+E00004,P001,1,4,2025-10-07,The competition heats up.
+E00005,P001,2,1,2025-08-05,The competition heats up.
+E00006,P002,1,1,2025-04-22,The competition heats up.
+E00007,P002,1,2,2025-09-16,A fan favourite returns for a special challenge.
+E00008,P002,1,3,2025-01-14,A fan favourite returns for a special challenge.
+E00009,P002,1,4,2025-04-12,A fan favourite returns for a special challenge.
+E00010,P003,1,1,2025-04-23,An unexpected twist changes everything.
+E00011,P003,1,2,2025-10-29,An unexpected twist changes everything.
+E00012,P003,1,3,2025-01-04,A gripping instalment as tensions rise.
+E00013,P003,1,4,2025-12-24,An unexpected twist changes everything.
+E00014,P003,1,5,2025-06-24,An unexpected twist changes everything.
+E00015,P003,1,6,2025-03-21,A gripping instalment as tensions rise.
+E00016,P003,1,7,2025-06-22,A gripping instalment as tensions rise.
+E00017,P003,2,1,2025-07-14,A gripping instalment as tensions rise.
+E00018,P003,2,2,2025-07-03,An unexpected twist changes everything.
+E00019,P003,2,3,2025-11-06,An unexpected twist changes everything.
+E00020,P003,2,4,2025-01-23,Characters face their biggest challenge yet.
+E00021,P003,3,1,2025-10-02,A gripping instalment as tensions rise.
+E00022,P003,3,2,2025-07-13,A gripping instalment as tensions rise.
+E00023,P003,3,3,2025-10-10,An unexpected twist changes everything.
+E00024,P003,3,4,2025-11-18,Characters face their biggest challenge yet.
+E00025,P003,3,5,2025-07-05,Characters face their biggest challenge yet.
+E00026,P003,3,6,2025-04-09,Characters face their biggest challenge yet.
+E00027,P003,3,7,2025-02-05,A gripping instalment as tensions rise.
+E00028,P003,4,1,2025-05-29,A gripping instalment as tensions rise.
+E00029,P003,4,2,2025-04-30,A gripping instalment as tensions rise.
+E00030,P003,4,3,2025-07-14,An unexpected twist changes everything.
+E00031,P003,4,4,2025-08-21,Characters face their biggest challenge yet.
+E00032,P003,4,5,2025-07-06,A gripping instalment as tensions rise.
+E00033,P003,5,1,2025-07-01,A gripping instalment as tensions rise.
+E00034,P004,1,1,2025-11-08,Special report on a developing story.
+E00035,P004,1,2,2025-03-29,Special report on a developing story.
+E00036,P004,1,3,2025-05-06,Tonight's top stories and analysis.
+E00037,P004,1,4,2025-08-25,In-depth coverage of breaking news.
+E00038,P004,2,1,2025-11-24,Special report on a developing story.
+E00039,P004,2,2,2025-10-13,Tonight's top stories and analysis.
+E00040,P004,2,3,2025-12-17,In-depth coverage of breaking news.
+E00041,P004,2,4,2025-01-29,Tonight's top stories and analysis.
+E00042,P004,2,5,2025-01-17,In-depth coverage of breaking news.
+E00043,P004,2,6,2025-07-25,In-depth coverage of breaking news.
+E00044,P004,3,1,2025-04-19,Special report on a developing story.
+E00045,P004,3,2,2025-06-11,Tonight's top stories and analysis.
+E00046,P005,1,1,2025-11-26,Surprises and shocks from the judges.
+E00047,P005,1,2,2025-03-15,Surprises and shocks from the judges.
+E00048,P005,1,3,2025-03-13,The competition heats up.
+E00049,P005,1,4,2025-10-15,A fan favourite returns for a special challenge.
+E00050,P005,1,5,2025-05-15,A fan favourite returns for a special challenge.
+E00051,P005,1,6,2025-10-27,Surprises and shocks from the judges.
+E00052,P005,1,7,2025-10-26,Surprises and shocks from the judges.
+E00053,P005,2,1,2025-04-23,The competition heats up.
+E00054,P005,2,2,2025-09-18,Surprises and shocks from the judges.
+E00055,P005,2,3,2025-02-16,The competition heats up.
+E00056,P005,2,4,2025-02-26,The competition heats up.
+E00057,P006,1,1,2025-11-02,Hilarious misunderstandings ensue.
+E00058,P006,1,2,2025-07-17,The gang gets into trouble again.
+E00059,P006,1,3,2025-11-02,The gang gets into trouble again.
+E00060,P006,1,4,2025-09-28,The gang gets into trouble again.
+E00061,P006,1,5,2025-10-11,Hilarious misunderstandings ensue.
+E00062,P006,1,6,2025-12-15,An embarrassing situation spirals out of control.
+E00063,P006,1,7,2025-02-28,An embarrassing situation spirals out of control.
+E00064,P006,2,1,2025-05-17,An embarrassing situation spirals out of control.
+E00065,P006,2,2,2025-06-24,Hilarious misunderstandings ensue.
+E00066,P006,2,3,2025-05-31,The gang gets into trouble again.
+E00067,P006,2,4,2025-03-22,The gang gets into trouble again.
+E00068,P006,2,5,2025-01-02,An embarrassing situation spirals out of control.
+E00069,P006,2,6,2025-05-15,An embarrassing situation spirals out of control.
+E00070,P006,2,7,2025-04-02,An embarrassing situation spirals out of control.
+E00071,P006,2,8,2025-02-24,An embarrassing situation spirals out of control.
+E00072,P007,1,1,2025-04-12,Hilarious misunderstandings ensue.
+E00073,P007,1,2,2025-07-11,Hilarious misunderstandings ensue.
+E00074,P007,1,3,2025-10-04,An embarrassing situation spirals out of control.
+E00075,P007,1,4,2025-01-01,An embarrassing situation spirals out of control.
+E00076,P007,1,5,2025-06-15,The gang gets into trouble again.
+E00077,P007,1,6,2025-01-10,Hilarious misunderstandings ensue.
+E00078,P007,1,7,2025-07-05,The gang gets into trouble again.
+E00079,P007,1,8,2025-05-03,Hilarious misunderstandings ensue.
+E00080,P007,2,1,2025-10-18,Hilarious misunderstandings ensue.
+E00081,P007,2,2,2025-02-13,An embarrassing situation spirals out of control.
+E00082,P007,2,3,2025-09-06,Hilarious misunderstandings ensue.
+E00083,P007,2,4,2025-09-30,Hilarious misunderstandings ensue.
+E00084,P007,2,5,2025-03-07,An embarrassing situation spirals out of control.
+E00085,P007,3,1,2025-10-09,Hilarious misunderstandings ensue.
+E00086,P007,3,2,2025-05-16,An embarrassing situation spirals out of control.
+E00087,P007,3,3,2025-11-07,The gang gets into trouble again.
+E00088,P008,1,1,2025-12-20,Experts investigate a surprising phenomenon.
+E00089,P008,1,2,2025-06-09,Behind-the-scenes access to a unique world.
+E00090,P008,1,3,2025-12-10,A revealing look at everyday life.
+E00091,P008,1,4,2025-07-11,Behind-the-scenes access to a unique world.
+E00092,P008,1,5,2025-09-22,Behind-the-scenes access to a unique world.
+E00093,P008,1,6,2025-03-03,Experts investigate a surprising phenomenon.
+E00094,P008,1,7,2025-04-26,Experts investigate a surprising phenomenon.
+E00095,P009,1,1,2025-10-29,A revealing look at everyday life.
+E00096,P009,1,2,2025-04-28,A revealing look at everyday life.
+E00097,P009,1,3,2025-04-23,Experts investigate a surprising phenomenon.
+E00098,P009,1,4,2025-02-06,A revealing look at everyday life.
+E00099,P009,2,1,2025-04-28,Experts investigate a surprising phenomenon.
+E00100,P009,2,2,2025-01-17,Behind-the-scenes access to a unique world.
+E00101,P009,2,3,2025-02-06,A revealing look at everyday life.
+E00102,P009,2,4,2025-05-02,Behind-the-scenes access to a unique world.
+E00103,P009,3,1,2025-04-20,A revealing look at everyday life.
+E00104,P010,1,1,2025-10-23,In-depth coverage of breaking news.
+E00105,P010,1,2,2025-05-05,In-depth coverage of breaking news.
+E00106,P010,1,3,2025-07-28,Tonight's top stories and analysis.
+E00107,P010,1,4,2025-02-18,Tonight's top stories and analysis.
+E00108,P010,1,5,2025-12-04,In-depth coverage of breaking news.
+E00109,P010,1,6,2025-07-01,In-depth coverage of breaking news.
+E00110,P010,1,7,2025-07-30,In-depth coverage of breaking news.
+E00111,P010,1,8,2025-01-28,Special report on a developing story.
+E00112,P010,2,1,2025-02-01,In-depth coverage of breaking news.
+E00113,P010,2,2,2025-06-23,Tonight's top stories and analysis.
+E00114,P011,1,1,2025-10-02,The gang gets into trouble again.
+E00115,P011,1,2,2025-03-13,The gang gets into trouble again.
+E00116,P011,1,3,2025-04-04,The gang gets into trouble again.
+E00117,P011,1,4,2025-08-25,Hilarious misunderstandings ensue.
+E00118,P011,1,5,2025-02-08,The gang gets into trouble again.
+E00119,P012,1,1,2025-01-26,A fan favourite returns for a special challenge.
+E00120,P012,1,2,2025-10-04,The competition heats up.
+E00121,P012,1,3,2025-02-17,The competition heats up.
+E00122,P012,1,4,2025-03-27,Surprises and shocks from the judges.
+E00123,P012,2,1,2025-09-04,The competition heats up.
+E00124,P012,2,2,2025-07-25,The competition heats up.
+E00125,P012,2,3,2025-03-26,Surprises and shocks from the judges.
+E00126,P012,2,4,2025-01-02,Surprises and shocks from the judges.
+E00127,P012,2,5,2025-05-16,Surprises and shocks from the judges.
+E00128,P012,2,6,2025-05-27,Surprises and shocks from the judges.
+E00129,P012,2,7,2025-12-23,A fan favourite returns for a special challenge.
+E00130,P012,3,1,2025-12-05,A fan favourite returns for a special challenge.
+E00131,P013,1,1,2025-06-01,Hilarious misunderstandings ensue.
+E00132,P013,1,2,2025-01-30,An embarrassing situation spirals out of control.
+E00133,P013,1,3,2025-10-05,Hilarious misunderstandings ensue.
+E00134,P013,1,4,2025-06-10,Hilarious misunderstandings ensue.
+E00135,P013,1,5,2025-01-26,An embarrassing situation spirals out of control.
+E00136,P013,2,1,2025-09-15,An embarrassing situation spirals out of control.
+E00137,P013,2,2,2025-03-22,Hilarious misunderstandings ensue.
+E00138,P013,2,3,2025-09-18,Hilarious misunderstandings ensue.
+E00139,P013,2,4,2025-04-06,Hilarious misunderstandings ensue.
+E00140,P013,2,5,2025-11-01,Hilarious misunderstandings ensue.
+E00141,P014,1,1,2025-03-03,A fan favourite returns for a special challenge.
+E00142,P014,1,2,2025-05-07,A fan favourite returns for a special challenge.
+E00143,P014,1,3,2025-11-01,The competition heats up.
+E00144,P014,1,4,2025-11-14,The competition heats up.
+E00145,P014,1,5,2025-08-03,A fan favourite returns for a special challenge.
+E00146,P014,1,6,2025-10-26,A fan favourite returns for a special challenge.
+E00147,P014,1,7,2025-09-25,Surprises and shocks from the judges.
+E00148,P015,1,1,2025-12-09,A fan favourite returns for a special challenge.
+E00149,P015,1,2,2025-06-10,The competition heats up.
+E00150,P015,1,3,2025-05-16,Surprises and shocks from the judges.
+E00151,P015,1,4,2025-03-09,A fan favourite returns for a special challenge.
+E00152,P015,1,5,2025-11-27,Surprises and shocks from the judges.
+E00153,P015,2,1,2025-06-11,The competition heats up.
+E00154,P015,2,2,2025-01-05,Surprises and shocks from the judges.
+E00155,P015,2,3,2025-11-15,A fan favourite returns for a special challenge.
+E00156,P016,1,1,2025-10-03,Experts investigate a surprising phenomenon.
+E00157,P016,1,2,2025-09-17,Behind-the-scenes access to a unique world.
+E00158,P016,1,3,2025-03-09,Behind-the-scenes access to a unique world.
+E00159,P016,1,4,2025-02-05,Experts investigate a surprising phenomenon.
+E00160,P016,2,1,2025-05-26,Experts investigate a surprising phenomenon.
+E00161,P017,1,1,2025-12-27,Surprises and shocks from the judges.
+E00162,P017,1,2,2025-11-10,A fan favourite returns for a special challenge.
+E00163,P017,1,3,2025-09-28,The competition heats up.
+E00164,P017,1,4,2025-12-08,A fan favourite returns for a special challenge.
+E00165,P017,1,5,2025-06-03,A fan favourite returns for a special challenge.
+E00166,P017,1,6,2025-02-23,The competition heats up.
+E00167,P017,1,7,2025-05-16,The competition heats up.
+E00168,P017,1,8,2025-02-24,A fan favourite returns for a special challenge.
+E00169,P017,2,1,2025-03-21,Surprises and shocks from the judges.
+E00170,P017,2,2,2025-05-25,A fan favourite returns for a special challenge.
+E00171,P017,2,3,2025-04-18,A fan favourite returns for a special challenge.
+E00172,P018,1,1,2025-12-18,A revealing look at everyday life.
+E00173,P018,1,2,2025-05-16,A revealing look at everyday life.
+E00174,P018,1,3,2025-09-08,Behind-the-scenes access to a unique world.
+E00175,P018,1,4,2025-01-27,Experts investigate a surprising phenomenon.
+E00176,P018,1,5,2025-11-21,Behind-the-scenes access to a unique world.
+E00177,P018,2,1,2025-01-23,Experts investigate a surprising phenomenon.
+E00178,P018,2,2,2025-06-20,Experts investigate a surprising phenomenon.
+E00179,P018,2,3,2025-11-23,Behind-the-scenes access to a unique world.
+E00180,P018,2,4,2025-03-24,A revealing look at everyday life.
+E00181,P019,1,1,2025-12-28,Surprises and shocks from the judges.
+E00182,P019,1,2,2025-10-15,The competition heats up.
+E00183,P019,1,3,2025-02-27,The competition heats up.
+E00184,P019,1,4,2025-12-20,The competition heats up.
+E00185,P019,1,5,2025-10-07,The competition heats up.
+E00186,P019,1,6,2025-07-09,A fan favourite returns for a special challenge.
+E00187,P019,1,7,2025-10-10,The competition heats up.
+E00188,P019,1,8,2025-08-09,The competition heats up.
+E00189,P019,2,1,2025-06-07,Surprises and shocks from the judges.
+E00190,P019,2,2,2025-01-21,Surprises and shocks from the judges.
+E00191,P019,2,3,2025-04-18,A fan favourite returns for a special challenge.
+E00192,P020,1,1,2025-10-14,An unexpected twist changes everything.
+E00193,P020,1,2,2025-11-14,Characters face their biggest challenge yet.
+E00194,P020,1,3,2025-03-21,A gripping instalment as tensions rise.
+E00195,P020,1,4,2025-03-25,A gripping instalment as tensions rise.
+E00196,P021,1,1,2025-06-20,An unexpected twist changes everything.
+E00197,P021,1,2,2025-12-09,Characters face their biggest challenge yet.
+E00198,P021,1,3,2025-05-08,An unexpected twist changes everything.
+E00199,P021,1,4,2025-03-23,Characters face their biggest challenge yet.
+E00200,P021,1,5,2025-02-25,An unexpected twist changes everything.
+E00201,P021,2,1,2025-08-29,A gripping instalment as tensions rise.
+E00202,P021,2,2,2025-04-13,An unexpected twist changes everything.
+E00203,P021,2,3,2025-06-29,An unexpected twist changes everything.
+E00204,P022,1,1,2025-12-04,A gripping instalment as tensions rise.
+E00205,P022,1,2,2025-07-24,An unexpected twist changes everything.
+E00206,P022,1,3,2025-05-23,A gripping instalment as tensions rise.
+E00207,P022,1,4,2025-05-23,An unexpected twist changes everything.
+E00208,P022,2,1,2025-07-24,Characters face their biggest challenge yet.
+E00209,P023,1,1,2025-03-01,An unexpected twist changes everything.
+E00210,P023,1,2,2025-04-02,Characters face their biggest challenge yet.
+E00211,P023,1,3,2025-05-16,A gripping instalment as tensions rise.
+E00212,P023,1,4,2025-02-25,Characters face their biggest challenge yet.
+E00213,P023,2,1,2025-06-26,Characters face their biggest challenge yet.
+E00214,P023,2,2,2025-06-10,An unexpected twist changes everything.
+E00215,P023,2,3,2025-11-07,Characters face their biggest challenge yet.
+E00216,P023,2,4,2025-03-01,An unexpected twist changes everything.
+E00217,P023,2,5,2025-10-23,A gripping instalment as tensions rise.
+E00218,P023,2,6,2025-05-11,A gripping instalment as tensions rise.
+E00219,P023,2,7,2025-12-29,An unexpected twist changes everything.
+E00220,P023,3,1,2025-09-24,Characters face their biggest challenge yet.
+E00221,P023,3,2,2025-12-18,Characters face their biggest challenge yet.
+E00222,P023,3,3,2025-12-10,A gripping instalment as tensions rise.
+E00223,P023,3,4,2025-07-06,An unexpected twist changes everything.
+E00224,P023,4,1,2025-12-07,An unexpected twist changes everything.
+E00225,P023,4,2,2025-11-16,An unexpected twist changes everything.
+E00226,P023,4,3,2025-12-06,A gripping instalment as tensions rise.
+E00227,P024,1,1,2025-06-08,An embarrassing situation spirals out of control.
+E00228,P024,1,2,2025-07-29,The gang gets into trouble again.
+E00229,P024,1,3,2025-07-26,An embarrassing situation spirals out of control.
+E00230,P024,1,4,2025-06-01,An embarrassing situation spirals out of control.
+E00231,P024,1,5,2025-03-07,Hilarious misunderstandings ensue.
+E00232,P024,1,6,2025-08-04,An embarrassing situation spirals out of control.
+E00233,P024,1,7,2025-07-14,An embarrassing situation spirals out of control.
+E00234,P024,1,8,2025-03-31,An embarrassing situation spirals out of control.
+E00235,P024,2,1,2025-06-04,The gang gets into trouble again.
+E00236,P024,2,2,2025-10-08,Hilarious misunderstandings ensue.
+E00237,P024,2,3,2025-06-05,The gang gets into trouble again.
+E00238,P024,2,4,2025-04-18,The gang gets into trouble again.
+E00239,P024,2,5,2025-10-24,An embarrassing situation spirals out of control.
+E00240,P024,2,6,2025-12-02,The gang gets into trouble again.
+E00241,P024,2,7,2025-08-27,The gang gets into trouble again.
+E00242,P024,2,8,2025-08-15,An embarrassing situation spirals out of control.
+E00243,P024,3,1,2025-09-19,The gang gets into trouble again.
+E00244,P024,3,2,2025-03-28,An embarrassing situation spirals out of control.
+E00245,P025,1,1,2025-12-06,An embarrassing situation spirals out of control.
+E00246,P025,1,2,2025-11-14,The gang gets into trouble again.
+E00247,P025,1,3,2025-02-17,Hilarious misunderstandings ensue.
+E00248,P025,1,4,2025-12-11,The gang gets into trouble again.
+E00249,P025,1,5,2025-04-26,Hilarious misunderstandings ensue.
+E00250,P025,1,6,2025-03-17,Hilarious misunderstandings ensue.
+E00251,P026,1,1,2025-11-09,Hilarious misunderstandings ensue.
+E00252,P026,1,2,2025-08-22,The gang gets into trouble again.
+E00253,P026,1,3,2025-11-19,An embarrassing situation spirals out of control.
+E00254,P026,1,4,2025-04-10,An embarrassing situation spirals out of control.
+E00255,P026,1,5,2025-12-23,The gang gets into trouble again.
+E00256,P027,1,1,2025-03-17,An embarrassing situation spirals out of control.
+E00257,P027,1,2,2025-12-19,Hilarious misunderstandings ensue.
+E00258,P027,1,3,2025-02-24,The gang gets into trouble again.
+E00259,P027,1,4,2025-04-23,Hilarious misunderstandings ensue.
+E00260,P027,1,5,2025-12-23,An embarrassing situation spirals out of control.
+E00261,P027,2,1,2025-01-26,An embarrassing situation spirals out of control.
+E00262,P027,2,2,2025-05-08,Hilarious misunderstandings ensue.
+E00263,P027,2,3,2025-08-22,Hilarious misunderstandings ensue.
+E00264,P027,2,4,2025-08-26,An embarrassing situation spirals out of control.
+E00265,P027,2,5,2025-09-29,An embarrassing situation spirals out of control.
+E00266,P027,2,6,2025-11-01,The gang gets into trouble again.
+E00267,P027,2,7,2025-08-15,An embarrassing situation spirals out of control.
+E00268,P027,3,1,2025-08-07,An embarrassing situation spirals out of control.
+E00269,P027,3,2,2025-08-17,Hilarious misunderstandings ensue.
+E00270,P028,1,1,2025-05-13,Hilarious misunderstandings ensue.
+E00271,P028,1,2,2025-11-23,The gang gets into trouble again.
+E00272,P028,1,3,2025-09-24,The gang gets into trouble again.
+E00273,P028,1,4,2025-11-17,Hilarious misunderstandings ensue.
+E00274,P028,1,5,2025-05-21,The gang gets into trouble again.
+E00275,P028,1,6,2025-02-09,An embarrassing situation spirals out of control.
+E00276,P028,1,7,2025-05-27,Hilarious misunderstandings ensue.
+E00277,P028,2,1,2025-06-21,The gang gets into trouble again.
+E00278,P028,2,2,2025-10-04,Hilarious misunderstandings ensue.
+E00279,P028,2,3,2025-03-12,Hilarious misunderstandings ensue.
+E00280,P028,2,4,2025-04-29,The gang gets into trouble again.
+E00281,P028,2,5,2025-12-22,Hilarious misunderstandings ensue.
+E00282,P028,2,6,2025-12-28,Hilarious misunderstandings ensue.
+E00283,P028,3,1,2025-08-01,The gang gets into trouble again.
+E00284,P028,3,2,2025-06-19,An embarrassing situation spirals out of control.
+E00285,P028,3,3,2025-08-27,The gang gets into trouble again.
+E00286,P028,3,4,2025-02-01,Hilarious misunderstandings ensue.
+E00287,P028,4,1,2025-07-19,An embarrassing situation spirals out of control.
+E00288,P028,4,2,2025-12-23,Hilarious misunderstandings ensue.
+E00289,P028,4,3,2025-10-22,The gang gets into trouble again.
+E00290,P028,4,4,2025-09-02,Hilarious misunderstandings ensue.
+E00291,P029,1,1,2025-08-03,An embarrassing situation spirals out of control.
+E00292,P029,1,2,2025-10-07,An embarrassing situation spirals out of control.
+E00293,P029,1,3,2025-04-23,The gang gets into trouble again.
+E00294,P029,1,4,2025-04-23,The gang gets into trouble again.
+E00295,P029,1,5,2025-08-12,The gang gets into trouble again.
+E00296,P029,1,6,2025-01-15,The gang gets into trouble again.
+E00297,P029,1,7,2025-06-22,An embarrassing situation spirals out of control.
+E00298,P029,2,1,2025-03-26,The gang gets into trouble again.
+E00299,P029,2,2,2025-03-07,An embarrassing situation spirals out of control.
+E00300,P029,2,3,2025-10-01,Hilarious misunderstandings ensue.
+E00301,P029,2,4,2025-07-21,An embarrassing situation spirals out of control.
+E00302,P029,2,5,2025-10-16,An embarrassing situation spirals out of control.
+E00303,P030,1,1,2025-03-11,The gang gets into trouble again.
+E00304,P030,1,2,2025-04-04,Hilarious misunderstandings ensue.
+E00305,P030,1,3,2025-05-14,The gang gets into trouble again.
+E00306,P030,1,4,2025-06-17,Hilarious misunderstandings ensue.
+E00307,P031,1,1,2025-06-17,Award-winning cinema.
+E00308,P032,1,1,2025-05-23,Award-winning cinema.
+E00309,P033,1,1,2025-02-11,Award-winning cinema.
+E00310,P034,1,1,2025-10-04,A critically acclaimed feature presentation.
+E00311,P035,1,1,2025-04-25,A modern classic.
+E00312,P036,1,1,2025-01-16,Experts investigate a surprising phenomenon.
+E00313,P036,1,2,2025-04-13,Experts investigate a surprising phenomenon.
+E00314,P036,1,3,2025-11-15,Experts investigate a surprising phenomenon.
+E00315,P036,1,4,2025-05-03,Experts investigate a surprising phenomenon.
+E00316,P036,2,1,2025-12-09,Experts investigate a surprising phenomenon.
+E00317,P037,1,1,2025-12-25,Behind-the-scenes access to a unique world.
+E00318,P037,1,2,2025-07-08,Experts investigate a surprising phenomenon.
+E00319,P037,1,3,2025-11-07,A revealing look at everyday life.
+E00320,P037,1,4,2025-02-28,Experts investigate a surprising phenomenon.
+E00321,P037,1,5,2025-06-09,Experts investigate a surprising phenomenon.
+E00322,P037,1,6,2025-10-24,Experts investigate a surprising phenomenon.
+E00323,P037,1,7,2025-06-09,A revealing look at everyday life.
+E00324,P038,1,1,2025-04-12,The competition heats up.
+E00325,P038,1,2,2025-10-31,A fan favourite returns for a special challenge.
+E00326,P038,1,3,2025-11-18,The competition heats up.
+E00327,P038,1,4,2025-02-22,A fan favourite returns for a special challenge.
+E00328,P038,1,5,2025-06-04,A fan favourite returns for a special challenge.
+E00329,P038,1,6,2025-11-04,The competition heats up.
+E00330,P038,1,7,2025-10-17,The competition heats up.
+E00331,P038,2,1,2025-09-30,Surprises and shocks from the judges.
+E00332,P038,2,2,2025-12-05,Surprises and shocks from the judges.
+E00333,P038,2,3,2025-02-05,A fan favourite returns for a special challenge.
+E00334,P039,1,1,2025-08-04,Behind-the-scenes access to a unique world.
+E00335,P039,1,2,2025-02-24,Behind-the-scenes access to a unique world.
+E00336,P039,1,3,2025-07-05,A revealing look at everyday life.
+E00337,P039,1,4,2025-08-24,A revealing look at everyday life.
+E00338,P039,2,1,2025-08-11,Experts investigate a surprising phenomenon.
+E00339,P039,2,2,2025-09-25,A revealing look at everyday life.
+E00340,P039,2,3,2025-05-19,A revealing look at everyday life.
+E00341,P039,2,4,2025-10-03,Behind-the-scenes access to a unique world.
+E00342,P039,2,5,2025-08-27,Behind-the-scenes access to a unique world.
+E00343,P040,1,1,2025-05-06,Experts investigate a surprising phenomenon.
+E00344,P040,1,2,2025-05-23,Behind-the-scenes access to a unique world.
+E00345,P040,1,3,2025-05-05,Behind-the-scenes access to a unique world.
+E00346,P040,1,4,2025-10-19,A revealing look at everyday life.
+E00347,P040,1,5,2025-12-09,Behind-the-scenes access to a unique world.
+E00348,P040,1,6,2025-06-22,Experts investigate a surprising phenomenon.
+E00349,P040,2,1,2025-06-16,Experts investigate a surprising phenomenon.
+E00350,P040,2,2,2025-09-07,Experts investigate a surprising phenomenon.
+E00351,P041,1,1,2025-05-24,Characters face their biggest challenge yet.
+E00352,P041,1,2,2025-12-26,An unexpected twist changes everything.
+E00353,P041,1,3,2025-10-12,A gripping instalment as tensions rise.
+E00354,P041,1,4,2025-09-22,A gripping instalment as tensions rise.
+E00355,P041,1,5,2025-02-13,A gripping instalment as tensions rise.
+E00356,P041,1,6,2025-07-28,An unexpected twist changes everything.
+E00357,P041,2,1,2025-05-04,Characters face their biggest challenge yet.
+E00358,P041,2,2,2025-09-01,Characters face their biggest challenge yet.
+E00359,P041,2,3,2025-12-31,An unexpected twist changes everything.
+E00360,P041,2,4,2025-08-18,A gripping instalment as tensions rise.
+E00361,P041,2,5,2025-02-17,An unexpected twist changes everything.
+E00362,P041,2,6,2025-04-24,An unexpected twist changes everything.
+E00363,P042,1,1,2025-12-06,An embarrassing situation spirals out of control.
+E00364,P042,1,2,2025-07-08,The gang gets into trouble again.
+E00365,P042,1,3,2025-10-11,An embarrassing situation spirals out of control.
+E00366,P042,1,4,2025-06-26,The gang gets into trouble again.
+E00367,P042,1,5,2025-10-09,The gang gets into trouble again.
+E00368,P042,1,6,2025-06-30,An embarrassing situation spirals out of control.
+E00369,P042,2,1,2025-05-19,The gang gets into trouble again.
+E00370,P042,2,2,2025-05-09,Hilarious misunderstandings ensue.
+E00371,P042,2,3,2025-03-03,An embarrassing situation spirals out of control.
+E00372,P042,2,4,2025-04-09,The gang gets into trouble again.
+E00373,P042,2,5,2025-03-03,An embarrassing situation spirals out of control.
+E00374,P042,2,6,2025-10-02,An embarrassing situation spirals out of control.
+E00375,P042,2,7,2025-04-05,Hilarious misunderstandings ensue.
+E00376,P042,3,1,2025-09-05,The gang gets into trouble again.
+E00377,P042,3,2,2025-10-29,An embarrassing situation spirals out of control.
+E00378,P043,1,1,2025-04-10,The gang gets into trouble again.
+E00379,P043,1,2,2025-04-27,The gang gets into trouble again.
+E00380,P043,1,3,2025-04-02,The gang gets into trouble again.
+E00381,P043,1,4,2025-01-08,An embarrassing situation spirals out of control.
+E00382,P043,2,1,2025-03-06,The gang gets into trouble again.
+E00383,P043,2,2,2025-01-24,Hilarious misunderstandings ensue.
+E00384,P043,2,3,2025-10-11,The gang gets into trouble again.
+E00385,P043,2,4,2025-12-24,Hilarious misunderstandings ensue.
+E00386,P043,2,5,2025-11-23,The gang gets into trouble again.
+E00387,P043,2,6,2025-02-22,Hilarious misunderstandings ensue.
+E00388,P043,2,7,2025-10-21,The gang gets into trouble again.
+E00389,P043,2,8,2025-08-29,The gang gets into trouble again.
+E00390,P043,3,1,2025-06-24,Hilarious misunderstandings ensue.
+E00391,P043,3,2,2025-01-27,The gang gets into trouble again.
+E00392,P043,3,3,2025-09-02,Hilarious misunderstandings ensue.
+E00393,P043,3,4,2025-02-03,The gang gets into trouble again.
+E00394,P043,3,5,2025-09-09,Hilarious misunderstandings ensue.
+E00395,P043,3,6,2025-10-23,An embarrassing situation spirals out of control.
+E00396,P044,1,1,2025-03-18,An embarrassing situation spirals out of control.
+E00397,P044,1,2,2025-06-05,Hilarious misunderstandings ensue.
+E00398,P044,1,3,2025-05-08,Hilarious misunderstandings ensue.
+E00399,P044,1,4,2025-10-13,The gang gets into trouble again.
+E00400,P044,1,5,2025-11-07,An embarrassing situation spirals out of control.
+E00401,P044,2,1,2025-04-26,An embarrassing situation spirals out of control.
+E00402,P044,2,2,2025-07-14,The gang gets into trouble again.
+E00403,P044,2,3,2025-08-15,The gang gets into trouble again.
+E00404,P044,2,4,2025-10-29,The gang gets into trouble again.
+E00405,P044,2,5,2025-06-06,An embarrassing situation spirals out of control.
+E00406,P044,2,6,2025-11-14,Hilarious misunderstandings ensue.
+E00407,P044,2,7,2025-11-09,An embarrassing situation spirals out of control.
+E00408,P045,1,1,2025-05-16,Characters face their biggest challenge yet.
+E00409,P045,1,2,2025-02-11,A gripping instalment as tensions rise.
+E00410,P045,1,3,2025-05-03,A gripping instalment as tensions rise.
+E00411,P045,1,4,2025-10-10,A gripping instalment as tensions rise.
+E00412,P045,1,5,2025-03-22,A gripping instalment as tensions rise.
+E00413,P046,1,1,2025-12-19,A dramatic finish in the final round.
+E00414,P046,1,2,2025-08-29,Highlights and post-match analysis.
+E00415,P046,1,3,2025-01-17,Full coverage of today's action.
+E00416,P046,1,4,2025-05-28,A dramatic finish in the final round.
+E00417,P046,1,5,2025-05-25,A dramatic finish in the final round.
+E00418,P046,1,6,2025-08-21,Full coverage of today's action.
+E00419,P047,1,1,2025-05-16,A dramatic finish in the final round.
+E00420,P047,1,2,2025-10-29,A dramatic finish in the final round.
+E00421,P047,1,3,2025-04-12,Highlights and post-match analysis.
+E00422,P047,1,4,2025-02-28,A dramatic finish in the final round.
+E00423,P047,1,5,2025-04-26,A dramatic finish in the final round.
+E00424,P047,2,1,2025-05-17,Full coverage of today's action.
+E00425,P047,2,2,2025-02-06,Full coverage of today's action.
+E00426,P047,2,3,2025-03-26,Highlights and post-match analysis.
+E00427,P048,1,1,2025-05-28,Highlights and post-match analysis.
+E00428,P048,1,2,2025-03-05,Highlights and post-match analysis.
+E00429,P048,1,3,2025-12-19,Highlights and post-match analysis.
+E00430,P048,1,4,2025-12-25,Highlights and post-match analysis.
+E00431,P048,1,5,2025-05-20,A dramatic finish in the final round.
+E00432,P048,1,6,2025-10-04,Highlights and post-match analysis.
+E00433,P048,1,7,2025-08-13,Full coverage of today's action.
+E00434,P049,1,1,2025-08-10,A dramatic finish in the final round.
+E00435,P049,1,2,2025-06-15,A dramatic finish in the final round.
+E00436,P049,1,3,2025-05-09,Full coverage of today's action.
+E00437,P049,1,4,2025-02-16,Full coverage of today's action.
+E00438,P049,2,1,2025-10-28,Full coverage of today's action.
+E00439,P049,2,2,2025-12-11,Highlights and post-match analysis.
+E00440,P049,2,3,2025-10-23,Full coverage of today's action.
+E00441,P050,1,1,2025-09-23,A dramatic finish in the final round.
+E00442,P050,1,2,2025-08-15,Highlights and post-match analysis.
+E00443,P050,1,3,2025-04-03,A dramatic finish in the final round.
+E00444,P050,1,4,2025-08-12,A dramatic finish in the final round.
+E00445,P051,1,1,2025-08-29,In-depth coverage of breaking news.
+E00446,P051,1,2,2025-07-29,In-depth coverage of breaking news.
+E00447,P051,1,3,2025-06-14,Special report on a developing story.
+E00448,P051,1,4,2025-02-23,Tonight's top stories and analysis.
+E00449,P051,2,1,2025-07-30,Special report on a developing story.
+E00450,P051,2,2,2025-09-11,In-depth coverage of breaking news.
+E00451,P051,2,3,2025-12-06,In-depth coverage of breaking news.
+E00452,P051,2,4,2025-10-09,Tonight's top stories and analysis.
+E00453,P051,2,5,2025-08-21,Tonight's top stories and analysis.
+E00454,P051,2,6,2025-06-11,In-depth coverage of breaking news.
+E00455,P051,3,1,2025-03-01,In-depth coverage of breaking news.
+E00456,P051,3,2,2025-09-21,Tonight's top stories and analysis.
+E00457,P051,3,3,2025-12-03,Special report on a developing story.
+E00458,P051,3,4,2025-08-25,In-depth coverage of breaking news.
+E00459,P051,3,5,2025-01-28,Tonight's top stories and analysis.
+E00460,P052,1,1,2025-09-13,Special report on a developing story.
+E00461,P052,1,2,2025-08-15,Tonight's top stories and analysis.
+E00462,P052,1,3,2025-04-15,In-depth coverage of breaking news.
+E00463,P052,1,4,2025-10-09,Tonight's top stories and analysis.
+E00464,P052,1,5,2025-05-28,In-depth coverage of breaking news.
+E00465,P052,1,6,2025-12-24,In-depth coverage of breaking news.
+E00466,P052,1,7,2025-03-04,Tonight's top stories and analysis.
+E00467,P052,1,8,2025-11-19,Special report on a developing story.
+E00468,P052,2,1,2025-12-30,Tonight's top stories and analysis.
+E00469,P052,2,2,2025-06-09,Special report on a developing story.
+E00470,P052,2,3,2025-01-08,Special report on a developing story.
+E00471,P052,2,4,2025-07-28,Tonight's top stories and analysis.
+E00472,P052,2,5,2025-04-26,Tonight's top stories and analysis.
+E00473,P053,1,1,2025-11-28,Tonight's top stories and analysis.
+E00474,P053,1,2,2025-09-13,Special report on a developing story.
+E00475,P053,1,3,2025-05-30,Special report on a developing story.
+E00476,P053,1,4,2025-12-28,In-depth coverage of breaking news.
+E00477,P053,2,1,2025-09-05,In-depth coverage of breaking news.
+E00478,P053,2,2,2025-05-05,In-depth coverage of breaking news.
+E00479,P053,2,3,2025-10-10,Tonight's top stories and analysis.
+E00480,P053,2,4,2025-07-16,Tonight's top stories and analysis.
+E00481,P053,2,5,2025-11-03,Special report on a developing story.
+E00482,P053,2,6,2025-03-11,Tonight's top stories and analysis.
+E00483,P053,2,7,2025-05-22,In-depth coverage of breaking news.
+E00484,P053,3,1,2025-09-17,In-depth coverage of breaking news.
+E00485,P053,3,2,2025-01-02,In-depth coverage of breaking news.
+E00486,P053,3,3,2025-06-02,Special report on a developing story.
+E00487,P053,3,4,2025-10-24,Special report on a developing story.
+E00488,P054,1,1,2025-10-03,The gang gets into trouble again.
+E00489,P054,1,2,2025-06-26,The gang gets into trouble again.
+E00490,P054,1,3,2025-10-10,An embarrassing situation spirals out of control.
+E00491,P054,1,4,2025-07-13,The gang gets into trouble again.
+E00492,P054,1,5,2025-06-14,Hilarious misunderstandings ensue.
+E00493,P054,1,6,2025-12-24,Hilarious misunderstandings ensue.
+E00494,P054,1,7,2025-10-20,The gang gets into trouble again.
+E00495,P054,2,1,2025-07-30,Hilarious misunderstandings ensue.
+E00496,P054,2,2,2025-06-12,An embarrassing situation spirals out of control.
+E00497,P054,2,3,2025-08-31,An embarrassing situation spirals out of control.
+E00498,P055,1,1,2025-12-06,A revealing look at everyday life.
+E00499,P055,1,2,2025-03-19,Behind-the-scenes access to a unique world.
+E00500,P055,1,3,2025-01-19,Experts investigate a surprising phenomenon.
+E00501,P055,1,4,2025-09-15,A revealing look at everyday life.
+E00502,P055,1,5,2025-06-19,Experts investigate a surprising phenomenon.
+E00503,P055,1,6,2025-08-14,Experts investigate a surprising phenomenon.
+E00504,P055,1,7,2025-09-27,Behind-the-scenes access to a unique world.
+E00505,P055,2,1,2025-03-15,Behind-the-scenes access to a unique world.
+E00506,P055,2,2,2025-12-02,Experts investigate a surprising phenomenon.
+E00507,P055,2,3,2025-02-08,Behind-the-scenes access to a unique world.
+E00508,P056,1,1,2025-11-16,A revealing look at everyday life.
+E00509,P056,1,2,2025-07-23,A revealing look at everyday life.
+E00510,P056,1,3,2025-02-11,Behind-the-scenes access to a unique world.
+E00511,P056,1,4,2025-12-12,A revealing look at everyday life.
+E00512,P056,1,5,2025-07-14,Behind-the-scenes access to a unique world.
+E00513,P056,1,6,2025-11-17,A revealing look at everyday life.
+E00514,P056,2,1,2025-10-05,Experts investigate a surprising phenomenon.
+E00515,P056,2,2,2025-11-13,Experts investigate a surprising phenomenon.
+E00516,P057,1,1,2025-04-27,A revealing look at everyday life.
+E00517,P057,1,2,2025-02-16,Behind-the-scenes access to a unique world.
+E00518,P057,1,3,2025-02-20,A revealing look at everyday life.
+E00519,P057,1,4,2025-12-27,Experts investigate a surprising phenomenon.
+E00520,P057,1,5,2025-08-16,Experts investigate a surprising phenomenon.
+E00521,P057,1,6,2025-12-22,Behind-the-scenes access to a unique world.
+E00522,P057,2,1,2025-01-24,Behind-the-scenes access to a unique world.
+E00523,P058,1,1,2025-07-03,Behind-the-scenes access to a unique world.
+E00524,P058,1,2,2025-08-09,Experts investigate a surprising phenomenon.
+E00525,P058,1,3,2025-05-06,A revealing look at everyday life.
+E00526,P058,1,4,2025-07-30,A revealing look at everyday life.
+E00527,P059,1,1,2025-03-31,The competition heats up.
+E00528,P059,1,2,2025-11-09,Surprises and shocks from the judges.
+E00529,P059,1,3,2025-11-14,A fan favourite returns for a special challenge.
+E00530,P059,1,4,2025-05-04,Surprises and shocks from the judges.
+E00531,P059,1,5,2025-10-26,The competition heats up.
+E00532,P059,2,1,2025-08-25,A fan favourite returns for a special challenge.
+E00533,P060,1,1,2025-05-11,A fan favourite returns for a special challenge.
+E00534,P060,1,2,2025-01-05,Surprises and shocks from the judges.
+E00535,P060,1,3,2025-05-28,A fan favourite returns for a special challenge.
+E00536,P060,1,4,2025-10-07,The competition heats up.
+E00537,P060,1,5,2025-02-07,Surprises and shocks from the judges.
+E00538,P060,1,6,2025-06-26,A fan favourite returns for a special challenge.
+E00539,P060,1,7,2025-06-03,A fan favourite returns for a special challenge.
+E00540,P060,2,1,2025-12-20,Surprises and shocks from the judges.
+E00541,P061,1,1,2025-04-12,Surprises and shocks from the judges.
+E00542,P061,1,2,2025-09-05,The competition heats up.
+E00543,P061,1,3,2025-05-02,Surprises and shocks from the judges.
+E00544,P061,1,4,2025-10-20,Surprises and shocks from the judges.
+E00545,P061,1,5,2025-10-22,Surprises and shocks from the judges.
+E00546,P061,1,6,2025-12-25,Surprises and shocks from the judges.
+E00547,P061,2,1,2025-12-04,Surprises and shocks from the judges.
+E00548,P061,2,2,2025-05-21,The competition heats up.
+E00549,P061,2,3,2025-10-17,A fan favourite returns for a special challenge.
+E00550,P061,2,4,2025-01-26,A fan favourite returns for a special challenge.
+E00551,P061,3,1,2025-05-27,The competition heats up.
+E00552,P062,1,1,2025-11-22,The competition heats up.
+E00553,P062,1,2,2025-11-14,Surprises and shocks from the judges.
+E00554,P062,1,3,2025-12-14,A fan favourite returns for a special challenge.
+E00555,P062,1,4,2025-12-04,A fan favourite returns for a special challenge.
+E00556,P062,1,5,2025-03-12,A fan favourite returns for a special challenge.
+E00557,P062,2,1,2025-11-18,A fan favourite returns for a special challenge.
+E00558,P062,2,2,2025-01-21,Surprises and shocks from the judges.
+E00559,P062,2,3,2025-08-14,The competition heats up.
+E00560,P062,2,4,2025-10-24,Surprises and shocks from the judges.
+E00561,P063,1,1,2025-02-16,Surprises and shocks from the judges.
+E00562,P064,1,1,2025-08-01,The competition heats up.
+E00563,P065,1,1,2025-03-09,A fan favourite returns for a special challenge.
