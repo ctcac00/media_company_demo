@@ -1,0 +1,46 @@
+name: Data or project improvement
+description: Propose a new data product, transformation, quality improvement, or developer-experience change.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the decision, workflow, or data-quality gap.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the desired model, metric, test, documentation, or workflow change.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: List the observable outcomes that make this complete.
+      placeholder: |
+        - [ ] ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Staging
+        - Intermediate transformations
+        - Marts / BI-facing data
+        - Semantic layer
+        - Data quality / testing
+        - Documentation
+        - Infrastructure / CI
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Include mockups, source availability, downstream consumers, or dependencies.

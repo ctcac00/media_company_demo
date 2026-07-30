@@ -1,0 +1,18 @@
+# Default review owner
+* @ctcac00
+
+# dbt transformation layers
+/models/staging/ @ctcac00
+/models/intermediate/ @ctcac00
+/models/marts/ @ctcac00
+/models/semantic/ @ctcac00
+/macros/ @ctcac00
+/tests/ @ctcac00
+/seeds/ @ctcac00
+
+# Platform and infrastructure configuration
+/dbt_project.yml @ctcac00
+/packages.yml @ctcac00
+/project-config.yaml @ctcac00
+/terraform/ @ctcac00
+/scripts/ @ctcac00
