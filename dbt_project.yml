@@ -39,3 +39,5 @@ seeds:
   media_company_demo:
     +schema: dbt_media_company_demo_source
     +quote_columns: false
+    +docs:
+      show: false
