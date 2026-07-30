@@ -79,6 +79,7 @@ final as (
         wc.overnight_viewers_thousands,
         wc.c7_viewers_thousands,
         wc.is_c7_consolidated,
+        wc.is_media_company_portfolio,
 
         -- Share of viewing: channel viewers / total UK viewers on that date (CA-03)
         wc.programme_viewers_thousands
