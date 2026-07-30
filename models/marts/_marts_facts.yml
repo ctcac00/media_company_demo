@@ -9,7 +9,7 @@ version: 2
 
 models:
   - name: fct_programme_audience_daily
-    description: "Daily programme audience facts from BARB data. Grain: 1 row per programme_id × channel_id × broadcast_date × demographic_id. TVR (CA-01), C7 consolidation (CA-02), share of viewing (CA-03), reach (CA-04)."
+    description: "Daily programme audience facts from BARB data. Grain: 1 row per programme_id × channel_id × broadcast_date × demographic_id. TVR (CA-01), C7 consolidation (CA-02), share of viewing (CA-03), reach (CA-04). Semantic model for programme audience, TVR, share of viewing, and reach metrics."
     config:
       contract:
         enforced: true
@@ -36,6 +36,8 @@ models:
         tests:
           - not_null
           - unique
+        entity:
+          type: primary
       - name: programme_id
         data_type: varchar
         description: "FK to dim_programme"
@@ -47,6 +49,8 @@ models:
               arguments:
                 to: ref('dim_programme')
                 field: programme_id
+        entity:
+          type: foreign
       - name: channel_id
         data_type: varchar
         description: "FK to dim_channel"
@@ -58,6 +62,8 @@ models:
               arguments:
                 to: ref('dim_channel')
                 field: channel_id
+        entity:
+          type: foreign
       - name: broadcast_date
         data_type: date
         description: "UK broadcast date"
@@ -65,6 +71,9 @@ models:
           - type: not_null
         tests:
           - not_null
+        dimension:
+          type: time
+        granularity: day
       - name: demographic_id
         data_type: varchar
         description: "FK to dim_demographic"
@@ -76,6 +85,8 @@ models:
               arguments:
                 to: ref('dim_demographic')
                 field: demographic_id
+        entity:
+          type: foreign
       - name: tvr_pct
         data_type: numeric(6,3)
         description: "Television Rating — viewers as % of UK 4+ population (CA-01)"
@@ -88,6 +99,8 @@ models:
       - name: is_c7_consolidated
         data_type: boolean
         description: "True when c7_viewers_thousands is not null (CA-02)"
+        dimension:
+          type: categorical
       - name: share_of_viewing_pct
         data_type: numeric(6,3)
         description: "Channel's share of total UK TV viewing for this date/demographic (CA-03)"
@@ -98,8 +111,49 @@ models:
         data_type: timestamp_tz
         description: "Timestamp when row was last refreshed"
 
+      - name: is_media_company_portfolio
+        dimension:
+          type: categorical
+    semantic_model:
+      enabled: true
+      name: fct_programme_audience_daily
+    agg_time_dimension: metric_time
+    metrics:
+      - name: share_of_viewing
+        label: "Overnight Viewers (thousands)"
+        description: "Sum of overnight viewers in thousands — used as TVR numerator and as share-of-viewing input (CA-03)"
+        type: simple
+        agg: sum
+        expr: overnight_viewers_thousands
+      - name: uk_population_metric
+        label: "UK 4+ Population (thousands)"
+        description: "UK 4+ population constant in thousands — helper denominator for TVR ratio"
+        type: simple
+        agg: max
+        expr: "{{ var('uk_population_thousands') }}"
+      - name: consolidated_7day_viewers
+        label: "C7 Viewers (thousands)"
+        description: "Consolidated 7-day (C7) viewers in thousands (CA-02)"
+        type: simple
+        agg: sum
+        expr: c7_viewers_thousands
+      - name: reach_15min_thousands_sum
+        agg: sum
+        expr: reach_15min_thousands
+        description: "Sum of consecutive 15-min reach in thousands"
+        type: simple
+        hidden: true
+      - name: tvr
+        label: "TVR"
+        description: "Television Rating — overnight viewers as a proportion of UK 4+ population (CA-01). Multiply by 100 in your BI tool for a percentage."
+        type: ratio
+        numerator:
+          name: share_of_viewing
+        denominator:
+          name: uk_population_metric
+
   - name: fct_ad_revenue
-    description: "Ad revenue fact combining linear TV spots and AVOD impressions. Grain: 1 row per channel_id × advertiser_id × campaign_id × daypart_id × broadcast_date × platform. AVOD rows have channel_id='streaming' and daypart_id=NULL."
+    description: "Ad revenue fact combining linear TV spots and AVOD impressions. Grain: 1 row per channel_id × advertiser_id × campaign_id × daypart_id × broadcast_date × platform. AVOD rows have channel_id='streaming' and daypart_id=NULL. Semantic model for ad revenue, impressions, CPM, and spot delivery metrics."
     config:
       contract:
         enforced: true
@@ -126,6 +180,8 @@ models:
         tests:
           - not_null
           - unique
+        entity:
+          type: primary
       - name: channel_id
         data_type: varchar
         description: "FK to dim_channel — 'streaming' sentinel for AVOD rows"
@@ -135,6 +191,8 @@ models:
                 to: ref('dim_channel')
                 field: channel_id
                 where: "channel_id is not null"
+        entity:
+          type: foreign
       - name: advertiser_id
         data_type: varchar
         description: "FK to dim_advertiser"
@@ -146,6 +204,8 @@ models:
               arguments:
                 to: ref('dim_advertiser')
                 field: advertiser_id
+        entity:
+          type: foreign
       - name: campaign_id
         data_type: varchar
         description: "Campaign identifier"
@@ -162,6 +222,8 @@ models:
                 to: ref('dim_daypart')
                 field: daypart_id
                 where: "daypart_id is not null"
+        entity:
+          type: foreign
       - name: broadcast_date
         data_type: date
         description: "UK broadcast date"
@@ -169,6 +231,9 @@ models:
           - type: not_null
         tests:
           - not_null
+        dimension:
+          type: time
+        granularity: day
       - name: platform
         data_type: varchar
         description: "Delivery platform (linear / avod)"
@@ -179,6 +244,8 @@ models:
           - accepted_values:
               arguments:
                 values: ['linear', 'avod']
+        dimension:
+          type: categorical
       - name: impressions_thousands
         data_type: numeric(14,2)
         description: "Delivered impressions in thousands"
@@ -204,8 +271,60 @@ models:
         data_type: timestamp_tz
         description: "Timestamp when row was last refreshed"
 
+    semantic_model:
+      enabled: true
+      name: fct_ad_revenue
+    agg_time_dimension: metric_time
+    metrics:
+      - name: total_ad_revenue_gbp
+        label: "Total Ad Revenue (GBP)"
+        description: "Total gross advertising revenue in GBP (linear + AVOD combined) (CA-05)"
+        type: simple
+        agg: sum
+        expr: actual_revenue_gbp
+      - name: ad_impressions
+        label: "Ad Impressions (thousands)"
+        description: "Total delivered ad impressions in thousands"
+        type: simple
+        agg: sum
+        expr: impressions_thousands
+      - name: rate_card_cpm_gbp
+        label: "Rate-Card CPM (GBP)"
+        description: "Average rate-card CPM in GBP — baseline pricing before discounts"
+        type: simple
+        agg: average
+        expr: rate_card_cpm_gbp
+      - name: booked_impressions_metric
+        label: "Booked Impressions (thousands)"
+        description: "Total booked ad impressions in thousands — helper denominator for spot delivery ratio"
+        type: simple
+        agg: sum
+        expr: booked_impressions_thousands
+      - name: realised_cpm_gbp
+        label: "Realised CPM (GBP)"
+        description: "Realised CPM = total revenue / impressions (CA-06). Derived from simple metrics per MetricFlow 1.6+ requirement."
+        type: derived
+        expr: "total_ad_revenue_gbp / ad_impressions"
+        input_metrics:
+          - name: total_ad_revenue_gbp
+          - name: ad_impressions
+
+  # Helper simple metric for spot_delivery_ratio denominator
+      - name: spot_delivery_ratio
+        label: "Spot Delivery Ratio"
+        description: "Delivered impressions / booked impressions (CA-07)"
+        type: ratio
+        numerator:
+          name: ad_impressions
+        denominator:
+          name: booked_impressions_metric
+
+  # ---------------------------------------------------------------------------
+  # Digital / MediaCo Streaming
+  # ---------------------------------------------------------------------------
+
   - name: fct_streaming_engagement
-    description: "MediaCo Streaming streaming engagement facts per session × programme. Grain: 1 row per session_id × programme_id × broadcast_date. Excludes programmes < 5 min (CA-09)."
+    description: "MediaCo Streaming streaming engagement facts per session × programme. Grain: 1 row per session_id × programme_id × broadcast_date. Excludes programmes < 5 min (CA-09). Semantic model for MediaCo Streaming streaming engagement, MAU, completion rate."
     config:
       contract:
         enforced: true
@@ -228,6 +347,8 @@ models:
         tests:
           - not_null
           - unique
+        entity:
+          type: primary
       - name: session_id
         data_type: varchar
         description: "Session identifier (pseudonymous device/browser session)"
@@ -238,6 +359,8 @@ models:
       - name: user_id
         data_type: varchar
         description: "Pseudonymous registered user identifier — NULL for unauthenticated sessions"
+        entity:
+          type: foreign
       - name: programme_id
         data_type: varchar
         description: "FK to dim_programme"
@@ -249,6 +372,8 @@ models:
               arguments:
                 to: ref('dim_programme')
                 field: programme_id
+        entity:
+          type: foreign
       - name: broadcast_date
         data_type: date
         description: "Date the programme originally aired (used for AVOD attribution)"
@@ -256,6 +381,9 @@ models:
           - type: not_null
         tests:
           - not_null
+        dimension:
+          type: time
+        granularity: day
       - name: platform
         data_type: varchar
         description: "Streaming platform (web / ios / android / ctv)"
@@ -266,9 +394,13 @@ models:
           - accepted_values:
               arguments:
                 values: ['web', 'ios', 'android', 'ctv']
+        dimension:
+          type: categorical
       - name: device_type
         data_type: varchar
         description: "Device category (mobile / tablet / desktop / smart_tv)"
+        dimension:
+          type: categorical
       - name: session_duration_min
         data_type: numeric(8,2)
         description: "Total session duration in minutes"
@@ -284,12 +416,64 @@ models:
       - name: is_new_user
         data_type: boolean
         description: "True if this is the user's first session on MediaCo Streaming"
+        dimension:
+          type: categorical
       - name: _dbt_updated_at
         data_type: timestamp_tz
         description: "Timestamp when row was last refreshed"
 
+    semantic_model:
+      enabled: true
+      name: fct_streaming_engagement
+    agg_time_dimension: metric_time
+    metrics:
+      - name: streaming_mau
+        label: "MediaCo Streaming MAU"
+        description: "MediaCo Streaming Monthly Active Users — distinct users with a play event in the rolling 30 days (CA-08)"
+        type: simple
+        agg: count_distinct
+        expr: user_id
+      - name: streaming_wau
+        label: "MediaCo Streaming WAU"
+        description: "MediaCo Streaming Weekly Active Users — distinct users with a play event in the rolling 7 days"
+        type: simple
+        agg: count_distinct
+        expr: user_id
+      - name: streaming_dau
+        label: "MediaCo Streaming DAU"
+        description: "MediaCo Streaming Daily Active Users — distinct users with a play event on a given day"
+        type: simple
+        agg: count_distinct
+        expr: user_id
+      - name: video_completes_metric
+        label: "Video Completions"
+        description: "Total video completions — helper metric for video_completion_rate"
+        type: simple
+        agg: sum
+        expr: video_completes
+      - name: video_starts_metric
+        label: "Video Starts"
+        description: "Total video play starts — helper metric for video_completion_rate"
+        type: simple
+        agg: sum
+        expr: video_starts
+      - name: avg_session_duration_min
+        label: "Avg Session Duration (min)"
+        description: "Average MediaCo Streaming session duration in minutes"
+        type: simple
+        agg: average
+        expr: session_duration_min
+      - name: video_completion_rate
+        label: "Video Completion Rate"
+        description: "Video completion rate = completes / starts (CA-09). Derived from simple metrics per MetricFlow 1.6+ requirement."
+        type: derived
+        expr: "video_completes_metric / video_starts_metric"
+        input_metrics:
+          - name: video_completes_metric
+          - name: video_starts_metric
+
   - name: fct_audience_reach_quarterly
-    description: "Quarterly audience reach for Ofcom reporting. Grain: 1 row per channel_id × demographic_id × broadcast_quarter. Reach is based on consecutive 15-minute viewing (approximated at hourly grain). CA-04, CA-10."
+    description: "Quarterly audience reach for Ofcom reporting. Grain: 1 row per channel_id × demographic_id × broadcast_quarter. Reach is based on consecutive 15-minute viewing (approximated at hourly grain). CA-04, CA-10. Semantic model for Ofcom-format quarterly audience reach metrics."
     config:
       contract:
         enforced: true
@@ -303,6 +487,8 @@ models:
         tests:
           - not_null
           - unique
+        entity:
+          type: primary
       - name: channel_id
         data_type: varchar
         description: "FK to dim_channel"
@@ -314,6 +500,8 @@ models:
               arguments:
                 to: ref('dim_channel')
                 field: channel_id
+        entity:
+          type: foreign
       - name: demographic_id
         data_type: varchar
         description: "FK to dim_demographic"
@@ -325,6 +513,8 @@ models:
               arguments:
                 to: ref('dim_demographic')
                 field: demographic_id
+        entity:
+          type: foreign
       - name: broadcast_quarter
         data_type: varchar
         description: "Broadcast quarter label (e.g. 2024Q1) — year + Q + quarter number"
@@ -332,6 +522,9 @@ models:
           - type: not_null
         tests:
           - not_null
+        dimension:
+          type: categorical
+        granularity: quarter
       - name: reach_thousands
         data_type: numeric(14,2)
         description: "Audience reach in thousands — sum of consecutive 15-min viewers across the quarter"
@@ -341,6 +534,19 @@ models:
       - name: is_15min_consecutive
         data_type: boolean
         description: "Always true — flags that this reach metric uses the consecutive 15-min definition"
+        dimension:
+          type: categorical
       - name: _dbt_updated_at
         data_type: timestamp_tz
         description: "Timestamp when row was last refreshed"
+    semantic_model:
+      enabled: true
+      name: fct_audience_reach_quarterly
+    agg_time_dimension: metric_time
+    metrics:
+      - name: reach_15min_consecutive
+        label: "Quarterly Reach — 15-min consecutive (thousands)"
+        description: "Quarterly reach: distinct viewers with consecutive 15-min viewing in thousands (CA-04)"
+        type: simple
+        agg: sum
+        expr: reach_thousands
