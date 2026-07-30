@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a reproducible problem in the dbt project or its data outputs.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please avoid including credentials, tokens, or sensitive data.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and its impact.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How can we reproduce it?
+      description: Include the model, selector, dbt command, and relevant error output.
+      placeholder: |
+        1. Run `dbt build --select +model_name+`
+        2. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: For example, dbt Platform development, CI, or production job.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Include affected relations, run links, screenshots, or recent changes.
