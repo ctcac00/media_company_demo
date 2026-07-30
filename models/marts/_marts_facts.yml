@@ -112,6 +112,8 @@ models:
         description: "Timestamp when row was last refreshed"
 
       - name: is_media_company_portfolio
+        data_type: boolean
+        description: "True when the channel belongs to the MediaCo portfolio"
         dimension:
           type: categorical
     semantic_model:
